@@ -16,7 +16,7 @@ const Logos = () => {
   return (
     <section>
         <div className="container">
-            <div className="flex justify-between py-[120px]">
+            <div className="flex justify-between py-[120px] px-[30px]">
                 {data.map((d) => {
                     return(
                         <div key={d._id}>
