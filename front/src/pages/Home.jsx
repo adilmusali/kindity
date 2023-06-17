@@ -5,6 +5,7 @@ import Causes from '../components/Home/Causes'
 import Features from '../components/Home/Features'
 import Events from '../components/Home/Events'
 import Testimonial from '../components/Home/Testimonial'
+import Logos from '../components/Home/Logos'
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <Features/>
       <Events/>
       <Testimonial/>
+      <Logos/>
     </>
   )
 }
