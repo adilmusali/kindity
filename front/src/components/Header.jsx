@@ -1,12 +1,13 @@
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Header = () => {
   return (
     <>
       <header className="border-t">
-        <div className="xl:container lg:container md:container sm:container">
+        <div className="container">
           <div className="flex justify-between items-center py-[30px]">
             <div>
               <a href="/">
@@ -17,7 +18,7 @@ const Header = () => {
                 />
               </a>
             </div>
-            <div className="flex items-center gap-[80px]">
+            <div className="items-center gap-[80px] hidden lg:flex">
               <ul className="flex gap-[45px] uppercase text-[12px] font-medium">
                 <Link to={"/"}>
                   <li className="text-[#ea2c58]">Home</li>
@@ -45,6 +46,7 @@ const Header = () => {
                 <a href="#"><AiOutlineSearch/></a>
               </div>
             </div>
+            <div className="block lg:hidden"><GiHamburgerMenu className="text-[30px] text-red-500"/></div>
           </div>
         </div>
       </header>

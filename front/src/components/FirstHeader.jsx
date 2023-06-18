@@ -4,7 +4,7 @@ import { Button1, Button2 } from "./Button";
 
 const FirstHeader = () => {
   return (
-    <div className="container">
+    <div className="container hidden sm:block">
       <div className="flex justify-between items-center py-[10px] text-[12px]">
         <div className="flex gap-4 text-gray-400">
           <a href="#">

@@ -13,15 +13,8 @@ export default {
       sm: "576px"
     },
     container: {
-      padding: "15px",
-      maxWidth: "1170px",
+      padding: "30px",
       center: true,
-      screens: {
-        xl: "1170px",
-        lg: "960px",
-        md: "720px",
-        sm: "540px"
-      }
     }
   },
   plugins: [],
