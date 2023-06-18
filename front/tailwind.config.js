@@ -13,7 +13,7 @@ export default {
       sm: "576px"
     },
     container: {
-      padding: "30px",
+      padding: "15px",
       center: true,
     }
   },

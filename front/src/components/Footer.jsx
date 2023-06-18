@@ -67,7 +67,7 @@ const Footer = () => {
                 </p>
                 <form action="" className="flex">
                   <input
-                    className="bg-inherit border border-slate-600 text-[13px] px-[20px] py-2 w-[70px] sm:w-[100px] md:w-[200px] lg:w-[250px] xl:w-[300px]"
+                    className="bg-inherit border border-slate-600 text-[13px] px-[20px] py-2 w-[130px] sm:w-[170px] md:w-[200px] lg:w-[250px] xl:w-[300px]"
                     placeholder="Email Adress"
                     type="email"
                   />
@@ -137,7 +137,7 @@ const Footer = () => {
             <span className="text-[14px] font-light">
               Copyright ©2023 All rights reserved
             </span>
-            <div className="flex gap-[30px] items-center">
+            <div className="flex flex-wrap gap-[30px] items-center">
               <FaFacebookF className="cursor-pointer hover:text-red-500 transition duration-500" />
               <FaTwitter className="cursor-pointer hover:text-red-500 transition duration-500" />
               <FaDribbble className="cursor-pointer hover:text-red-500 transition duration-500" />

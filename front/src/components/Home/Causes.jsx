@@ -19,20 +19,20 @@ const Causes = () => {
     <section className="bg-[#f9f9ff]">
       <div className="container">
         <div className="py-[120px]">
-          <div className="text-center">
-            <h2 className="text-[36px] font-semibold mb-[20px]">
+          <div className="text-center mb-[80px]">
+            <h2 className="text-[25px] sm:text-[36px] font-semibold mb-[20px]">
               Our Major Causes
             </h2>
-            <p className="text-[14px] text-slate-500 font-light mx-[200px] mb-[80px] leading-6">
+            <p className="text-[14px] text-slate-500 font-light leading-6">
               The French Revolution constituted for the conscience of the
               dominant aristocratic class a fall from innocence, and upturning
               of the natural chain of events that resounded.
             </p>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-center md:justify-between flex-wrap lg:flex-nowrap gap-5 lg:gap-0">
             {data.map((d) => {
                 return(
-            <div key={d._id} className="flex flex-col bg-white w-[31%] relative">
+            <div key={d._id} className="flex flex-col bg-white w-[70%] md:w-[48%] lg:w-[31%] relative">
               <div className="relative">
                 <img
                   className="w-full"
@@ -61,13 +61,13 @@ const Causes = () => {
               <div className="w-full flex text-[14px] absolute bottom-0">
                 <a
                   href="#"
-                  className="bg-[#ea2c58] text-white w-[50%] font-medium pl-[30px] py-[15px]"
+                  className="bg-[#ea2c58] text-white w-[50%] font-medium px-[10px] sm:px-[30px] lg:px-[15px] xl:px-[30px] py-[15px]"
                 >
                   Raised: ${d.raised}
                 </a>
                 <a
                   href="#"
-                  className="border w-[50%] font-medium pl-[30px] py-[15px]"
+                  className="border w-[50%] font-medium px-[10px] sm:px-[20px] lg:px-[10px] xl:px-[20px] py-[15px]"
                 >
                   Total Need: ${d.need}k
                 </a>

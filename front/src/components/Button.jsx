@@ -26,7 +26,8 @@ export const Button3 = () => {
   return (
     <button className="text-[14px] uppercase font-semibold px-[30px] py-3 border 
     border-[#ea2c58] bg-[#ea2c58] 
-    hover:bg-transparent hover:text-[#ea2c58] transition duration-500">
+    hover:bg-transparent hover:text-[#ea2c58] transition duration-500
+    w-full sm:w-[180px]">
         Donate Now
     </button>
   );
@@ -34,7 +35,8 @@ export const Button3 = () => {
 
 export const Button4 = () => {
   return (
-    <button id="glass" className="text-[14px] font-semibold uppercase px-[30px] py-3">
+    <button id="glass" className="text-[14px] font-semibold uppercase px-[30px] py-3
+    w-full sm:w-[180px]">
         View Activity
     </button>
   );
