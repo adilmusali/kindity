@@ -21,9 +21,9 @@ const Header = () => {
             <div className="items-center gap-[80px] hidden lg:flex">
               <ul className="flex gap-[45px] uppercase text-[12px] font-medium">
                 <Link to={"/"}>
-                  <li className="text-[#ea2c58]">Home</li>
+                  <li className="hover:text-[#ea2c58] transition duration-500">Home</li>
                 </Link>
-                <Link>
+                <Link to={"/gallery"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">Gallery</li>
                 </Link>
                 <Link>

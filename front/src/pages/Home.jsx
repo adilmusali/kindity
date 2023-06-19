@@ -6,7 +6,6 @@ import Features from '../components/Home/Features'
 import Events from '../components/Home/Events'
 import Testimonial from '../components/Home/Testimonial'
 import Logos from '../components/Home/Logos'
-import Stat from '../components/Home/Stat'
 
 const Home = () => {
   return (
