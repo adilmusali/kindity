@@ -26,7 +26,7 @@ const Header = () => {
                 <Link to={"/gallery"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">Gallery</li>
                 </Link>
-                <Link>
+                <Link to={"/about"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">About</li>
                 </Link>
                 <Link>
