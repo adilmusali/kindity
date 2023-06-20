@@ -29,7 +29,7 @@ const Header = () => {
                 <Link to={"/about"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">About</li>
                 </Link>
-                <Link>
+                <Link to={"/events"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">Events</li>
                 </Link>
                 <Link>

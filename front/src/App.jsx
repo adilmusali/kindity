@@ -7,6 +7,7 @@ import Footer from './components/Footer'
 import FirstHeader from './components/FirstHeader'
 import Gallery from './pages/Gallery'
 import About from './pages/About'
+import Event from './pages/Event'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path='/' element={<Home />}></Route>
       <Route path='/gallery' element={<Gallery />}></Route>
       <Route path='/about' element={<About />}></Route>
+      <Route path='/events' element={<Event />}></Route>
     </Routes>
     <Footer />
     </>

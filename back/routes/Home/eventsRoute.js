@@ -20,8 +20,18 @@ const del = async (req,res) => {
     res.send({message: "Successfully Deleted!"});
 }
 
+const put = async (req, res) => {
+    const Id = req.params.id;
+    const updated = req.body;
+    const result = await Events.findByIdAndUpdate(Id, updated, {
+      new: true,
+    });
+    res.send(result);
+  };
+
 router.get("/", get)
 router.post("/", post)
 router.delete("/:id", del)
+router.put("/:id", put)
 
 module.exports = router
