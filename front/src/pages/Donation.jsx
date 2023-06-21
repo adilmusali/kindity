@@ -1,8 +1,11 @@
 import React from 'react'
+import RoutingDonation from '../components/Donation/RoutingDonation'
 
 const Donation = () => {
   return (
-    <div>Donation</div>
+    <>
+      <RoutingDonation />
+    </>
   )
 }
 

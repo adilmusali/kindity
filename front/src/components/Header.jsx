@@ -32,7 +32,7 @@ const Header = () => {
                 <Link to={"/event"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">Events</li>
                 </Link>
-                <Link>
+                <Link to={"/donation"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">Donation</li>
                 </Link>
                 <Link>
