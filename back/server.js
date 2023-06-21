@@ -10,6 +10,7 @@ const eventsRoute = require("./routes/Home/eventsRoute")
 const testimonialRoute = require("./routes/Home/testimonialRoute")
 const imagesRoute = require("./routes/Gallery/imagesRoute")
 const logoRoute = require("./routes/Home/logoRoute")
+const donationRoute = require("./routes/Donation/donationRoute")
 
 dotenv.config()
 const app = express()
@@ -36,6 +37,9 @@ app.use("/kindity/home/logo", logoRoute)
 
 //Gallery
 app.use("/kindity/gallery", imagesRoute)
+
+//Donation
+app.use("/kindity/donation", donationRoute)
 
 PORT = process.env.PORT
 app.listen(PORT, () => {

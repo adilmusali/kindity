@@ -8,7 +8,7 @@ const Header = () => {
     <>
       <header className="border-t">
         <div className="container">
-          <div className="flex justify-between items-center py-[30px]">
+          <div className="flex flex-wrap justify-between items-center py-[30px]">
             <div>
               <a href="/">
                 <img
