@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {Link} from "react-router-dom"
 
 const TopicEvents = () => {
     const [data, setData] = useState([]);
@@ -27,12 +28,12 @@ const TopicEvents = () => {
                 >
                   <img className="w-full sm:w-[260px] sm:h-[220px] sm:w-none" src={d.img} alt="" />
                   <div className="flex flex-col gap-3">
-                    <span className="text-[12px] text-[#777777] font-light">
+                    <a href='#' className="text-[12px] text-[#777777] hover:text-[#ea2c58] transition duration-500 font-light">
                       25th February, 2017
-                    </span>
-                    <h4 className="text-[18px] font-semibold">
+                    </a>
+                    <Link to={`${d._id}`}><h4 className="text-[18px] font-semibold hover:text-[#ea2c58] transition duration-500">
                       {d.header}
-                    </h4>
+                    </h4></Link>
                     <p className="text-[14px] text-[#777777] font-light leading-6">
                       {d.desc}
                     </p>

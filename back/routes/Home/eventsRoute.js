@@ -7,6 +7,12 @@ const get = async (req,res) => {
     res.send(events);
 }
 
+const getById = async (req,res) => {
+  const findId = req.params.id;
+  const events = await Events.findById(findId);
+  res.send(events);
+}
+
 const post = async (req,res) => {
     const uploadData = req.body;
     const events = new Events(uploadData);
@@ -33,5 +39,6 @@ router.get("/", get)
 router.post("/", post)
 router.delete("/:id", del)
 router.put("/:id", put)
+router.get("/:id", getById)
 
 module.exports = router

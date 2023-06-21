@@ -127,7 +127,7 @@ const Images = () => {
     <section>
       <div className="container">
         <div className="py-[120px] text-center">
-          <div className="flex justify-center gap-[30px]">
+          <div className="flex flex-wrap md:flex-nowrap justify-center gap-[30px]">
             <div className="flex flex-col gap-[30px]">{renderImages().slice(0, 4)}</div>
             <div className="flex flex-col gap-[30px]">{renderImages().slice(4, 8)}</div>
             <div className="flex flex-col gap-[30px]">{renderImages().slice(8, 12)}</div>

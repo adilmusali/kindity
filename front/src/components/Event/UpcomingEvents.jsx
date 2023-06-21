@@ -22,7 +22,7 @@ const UpcomingEvents = () => {
                 <BsArrowRight />
               </Link>
               <a
-                href="/events"
+                href="/event"
                 className="text-white hover:text-[#ea2c58] transition duration-500"
               >
                 Events

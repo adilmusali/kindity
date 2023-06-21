@@ -11,8 +11,8 @@ const AboutUs = () => {
       >
         <div className="container">
           <div className="flex flex-col gap-5 text-white text-center py-[100px]">
-            <h2 className="text-[48px] font-bold">About Us</h2>
-            <div className="flex gap-2 text-[14px] font-light mx-auto">
+            <h2 className="text-[32px] sm:text-[48px] font-bold">About Us</h2>
+            <div className="flex gap-2 text-[14px] font-light mx-auto flex-wrap justify-center">
               <Link
                 to={"/"}
                 className="flex items-center gap-2 

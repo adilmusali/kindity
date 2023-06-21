@@ -67,7 +67,7 @@ const Footer = () => {
                 </p>
                 <form action="" className="flex">
                   <input
-                    className="bg-inherit border border-slate-600 text-[13px] px-[20px] py-2 w-[130px] sm:w-[170px] md:w-[200px] lg:w-[250px] xl:w-[300px]"
+                    className="bg-inherit border border-slate-600 text-[13px] px-[20px] py-2 w-full sm:w-[170px] md:w-[200px] lg:w-[250px] xl:w-[300px]"
                     placeholder="Email Adress"
                     type="email"
                   />
