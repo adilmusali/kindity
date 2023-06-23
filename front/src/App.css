@@ -23,3 +23,22 @@
   border: 1px solid rgba(255, 255, 255, 0.27);
   transition: 0.5s;
 }
+
+#header.scrolled {
+  position: fixed;
+  width: 100%;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.35s ease-out;
+  background-color: white;
+  top: 0;
+  z-index: 10;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
