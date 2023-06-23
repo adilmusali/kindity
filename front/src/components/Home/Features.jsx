@@ -38,7 +38,7 @@ const Features = () => {
         <div className="container">
           <div className="py-[120px]">
             <div className="text-center mb-[80px]">
-              <h2 className="text-[36px] text-white font-semibold mb-[20px]">
+              <h2 className="text-[25px] sm:text-[36px] text-white font-semibold mb-[20px]">
                 Our Key Features
               </h2>
               <p className="text-[14px] text-[#777777] font-light leading-6">

@@ -10,6 +10,7 @@ import About from './pages/About'
 import Event from './pages/Event'
 import EventDetail from './pages/EventDetail'
 import Donation from './pages/Donation'
+import Contact from './pages/Contact'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path='/event' element={<Event />}></Route>
       <Route path='/event/:id' element={<EventDetail />}></Route>
       <Route path='/donation' element={<Donation />}></Route>
+      <Route path='/contact' element={<Contact />}></Route>
     </Routes>
     <Footer />
     </>

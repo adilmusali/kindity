@@ -38,7 +38,7 @@ const Header = () => {
                 <Link>
                   <li className="hover:text-[#ea2c58] transition duration-500">Blog</li>
                 </Link>
-                <Link>
+                <Link to={"/contact"}>
                   <li className="hover:text-[#ea2c58] transition duration-500">Contact</li>
                 </Link>
               </ul>
