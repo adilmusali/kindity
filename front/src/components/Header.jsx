@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const Header = () => {
+  const [activeLink, setActiveLink] = useState("");
+  
   useEffect(() => {
+
     const handleScroll = () => {
       const header = document.getElementById("header");
       const toggleClass = "scrolled";
@@ -24,6 +27,10 @@ const Header = () => {
     };
   }, []);
 
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
+
   return (
     <>
       <header id="header" className="border-t">
@@ -41,27 +48,44 @@ const Header = () => {
             <div className="items-center gap-[80px] hidden lg:flex">
               <ul className="flex gap-[45px] uppercase text-[12px] font-medium">
                 <Link to={"/"}>
-                  <li className="hover:text-[#ea2c58] transition duration-500">
+                  <li
+                    className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "home" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("home")}
+                  >
                     Home
                   </li>
                 </Link>
                 <Link to={"/gallery"}>
-                  <li className="hover:text-[#ea2c58] transition duration-500">
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "gallery" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("gallery")}>
                     Gallery
                   </li>
                 </Link>
                 <Link to={"/about"}>
-                  <li className="hover:text-[#ea2c58] transition duration-500">
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "about" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("about")}>
                     About
                   </li>
                 </Link>
                 <Link to={"/event"}>
-                  <li className="hover:text-[#ea2c58] transition duration-500">
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "event" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("event")}>
                     Events
                   </li>
                 </Link>
                 <Link to={"/donation"}>
-                  <li className="hover:text-[#ea2c58] transition duration-500">
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "donation" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("donation")}>
                     Donation
                   </li>
                 </Link>
@@ -71,7 +95,10 @@ const Header = () => {
                   </li>
                 </Link>
                 <Link to={"/contact"}>
-                  <li className="hover:text-[#ea2c58] transition duration-500">
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "contact" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("contact")}>
                     Contact
                   </li>
                 </Link>
