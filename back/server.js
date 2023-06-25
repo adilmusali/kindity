@@ -12,6 +12,7 @@ const imagesRoute = require("./routes/Gallery/imagesRoute")
 const logoRoute = require("./routes/Home/logoRoute")
 const donationRoute = require("./routes/Donation/donationRoute")
 const contactRoute = require("./routes/Contact/contactRoute")
+const authRoutes = require("./routes/authRoutes")
 
 dotenv.config()
 const app = express()
@@ -44,6 +45,9 @@ app.use("/kindity/donation", donationRoute)
 
 //Contact
 app.use("/kindity/contact", contactRoute)
+
+//Auth
+app.use("/", authRoutes)
 
 PORT = process.env.PORT
 app.listen(PORT, () => {

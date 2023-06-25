@@ -1,6 +1,7 @@
 import React from "react";
 import { FaFacebookF, FaTwitter, FaDribbble, FaBehance } from "react-icons/fa";
 import { Button1, Button2 } from "./Button";
+import { Link } from "react-router-dom";
 
 const FirstHeader = () => {
   return (
@@ -27,8 +28,9 @@ const FirstHeader = () => {
             <option value="Indian">Indian</option>
             <option value="Aus">Aus</option>
           </select>
-          <Button1 />
-          <Button2 />
+          <Link to={"/register"}><button>Register</button></Link>
+          <Link to={"/login"}><Button1 /></Link>
+          <Link to={"/donation"}><Button2 /></Link>
         </div>
       </div>
     </div>
