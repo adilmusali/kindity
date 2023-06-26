@@ -1,15 +1,25 @@
-import React from 'react'
+import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const TopicEvents = () => {
-    const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [value, setValue] = useState("");
+  const [sortAsc, setSortAsc] = useState(true)
 
   const getData = async () => {
     const res = await axios.get("http://localhost:3000/kindity/home/events");
     setData(res.data);
   };
+
+  const checkData = (e) => {
+    setValue(e.target.value);
+  };
+
+  const toggle = () => {
+    setSortAsc((prevSortAsc) => !prevSortAsc)
+  }
 
   useEffect(() => {
     getData();
@@ -18,34 +28,63 @@ const TopicEvents = () => {
     <section>
       <div className="container">
         <div className="py-[120px]">
+          <div className="flex justify-between pb-[60px]">
+            <input
+              className="border border-[#777777] px-4 py-2 rounded-[20px] focus:outline-none focus:ring"
+              type="text"
+              value={value}
+              onChange={checkData}
+              placeholder="Search Events..."
+            />
+            <button
+              className="px-[50px] py-2 text-white bg-[#ea2c58] 
+              hover:bg-white hover:text-slate-500 border border-[#ea2c58] transition duration-500 rounded-[20px]"
+              onClick={toggle}
+            >
+              Sort By Name
+            </button>
+          </div>
           <div className="flex justify-center gap-[30px] lg:justify-between flex-wrap">
             {data
-            .map((d) => {
-              return (
-                <div
-                  key={d._id}
-                  className="flex gap-[30px] w-full lg:w-[48%] flex-wrap sm:flex-nowrap items-center"
-                >
-                  <img className="w-full sm:w-[260px] sm:h-[220px] sm:w-none" src={d.img} alt="" />
-                  <div className="flex flex-col gap-3">
-                    <a href='#' className="text-[12px] text-[#777777] hover:text-[#ea2c58] transition duration-500 font-light">
-                      25th February, 2017
-                    </a>
-                    <Link to={`${d._id}`}><h4 className="text-[18px] font-semibold hover:text-[#ea2c58] transition duration-500">
-                      {d.header}
-                    </h4></Link>
-                    <p className="text-[14px] text-[#777777] font-light leading-6">
-                      {d.desc}
-                    </p>
+              .filter((item) =>
+              item.header.toLowerCase().includes(value.toLowerCase())
+              )
+              .sort((a, b) => (sortAsc ? a.header.localeCompare(b.header) : b.header.localeCompare(a.header)))
+              .map((d) => {
+                return (
+                  <div
+                    key={d._id}
+                    className="flex gap-[30px] w-full lg:w-[48%] flex-wrap sm:flex-nowrap items-center"
+                  >
+                    <img
+                      className="w-full sm:w-[260px] sm:h-[220px] sm:w-none"
+                      src={d.img}
+                      alt=""
+                    />
+                    <div className="flex flex-col gap-3">
+                      <a
+                        href="#"
+                        className="text-[12px] text-[#777777] hover:text-[#ea2c58] transition duration-500 font-light"
+                      >
+                        25th February, 2017
+                      </a>
+                      <Link to={`${d._id}`}>
+                        <h4 className="text-[18px] font-semibold hover:text-[#ea2c58] transition duration-500">
+                          {d.header}
+                        </h4>
+                      </Link>
+                      <p className="text-[14px] text-[#777777] font-light leading-6">
+                        {d.desc}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default TopicEvents
+export default TopicEvents;

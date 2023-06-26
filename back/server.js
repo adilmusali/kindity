@@ -1,4 +1,5 @@
 const express = require("express")
+const cookieParser = require('cookie-parser')
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const cors = require("cors")
@@ -25,7 +26,9 @@ mongoose.connect(DB, {})
 .catch((error) => console.error("Database connect error:",error))
 
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(cookieParser());
+app.use(express.urlencoded({extended:false}))
+
 
 
 //Home
@@ -49,7 +52,7 @@ app.use("/kindity/contact", contactRoute)
 //Auth
 app.use("/", authRoutes)
 
-PORT = process.env.PORT
+PORT = 3000
 app.listen(PORT, () => {
     console.log("connected port " + PORT)
 })
