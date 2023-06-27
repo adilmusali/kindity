@@ -14,6 +14,7 @@ import Contact from './pages/Contact'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { Toaster } from 'react-hot-toast'
+import Blog from './pages/Blog'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path='/contact' element={<Contact />}></Route>
       <Route path='/login' element={<Login />}></Route>
       <Route path='/register' element={<Register />}></Route>
+      <Route path='/blog' element={<Blog />}></Route>
     </Routes>
     <Footer />
     </>

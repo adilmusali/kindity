@@ -89,8 +89,11 @@ const Header = () => {
                     Donation
                   </li>
                 </Link>
-                <Link>
-                  <li className="hover:text-[#ea2c58] transition duration-500">
+                <Link to={"/blog"}>
+                <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "blog" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("blog")}>
                     Blog
                   </li>
                 </Link>
