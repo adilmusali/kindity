@@ -2,7 +2,7 @@ import React from 'react'
 
 const GeneralCategories = () => {
   return (
-    <section>
+    <section className='bg-[#f9f9ff]'>
         <div className="container">
             <div className='flex lg:justify-between flex-col items-center gap-[30px] lg:gap-0 lg:flex-row py-[80px]'>
                 <div className='cursor-pointer bg-no-repeat p-[20px] bg-[url("https://preview.colorlib.com/theme/kindity/img/blog/cat-post/cat-post-3.jpg.webp")]'>
