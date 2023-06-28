@@ -13,6 +13,8 @@ const imagesRoute = require("./routes/Gallery/imagesRoute")
 const logoRoute = require("./routes/Home/logoRoute")
 const donationRoute = require("./routes/Donation/donationRoute")
 const contactRoute = require("./routes/Contact/contactRoute")
+const newsRoute = require("./routes/Blog/newsRoute")
+const optionsRoute = require("./routes/Blog/optionsRoute")
 const authRoutes = require("./routes/authRoutes")
 
 dotenv.config()
@@ -48,6 +50,10 @@ app.use("/kindity/donation", donationRoute)
 
 //Contact
 app.use("/kindity/contact", contactRoute)
+
+//Blog
+app.use("/kindity/blog/news", newsRoute)
+app.use("/kindity/blog/options", optionsRoute)
 
 //Auth
 app.use("/", authRoutes)
