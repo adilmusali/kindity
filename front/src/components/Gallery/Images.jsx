@@ -3,6 +3,8 @@ import axios from "axios";
 
 const Images = () => {
   const [data, setData] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalSrc, setModalSrc] = useState("");
 
   useEffect(() => {
     const getData = async () => {
@@ -17,16 +19,26 @@ const Images = () => {
     getData();
   }, []);
 
+  const showModal = (src) => {
+    setModalVisible(true);
+    setModalSrc(src);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   const renderImages = () => {
-    const images = [];
-    for (let i = 0; i < 12; i++) {
-      images.push(
-        <div key={i}>
-          <img src={data[i]?.img} className="" alt="" />
-        </div>
-      );
-    }
-    return images;
+    return data.slice(0, 12).map((item, index) => (
+      <div key={index}>
+        <img
+          src={item.img}
+          className="w-full h-full object-cover cursor-pointer"
+          alt=""
+          onClick={() => showModal(item.img)}
+        />
+      </div>
+    ));
   };
 
   return (
@@ -46,6 +58,21 @@ const Images = () => {
           </div>
         </div>
       </div>
+      {modalVisible && (
+        <div className="fixed inset-0 flex justify-center items-center">
+          <div className="fixed inset-0 bg-black opacity-70" onClick={closeModal}></div>
+          <div className="max-w-[800px] max-h-[600px] relative">
+            <img className="w-full h-full object-cover" src={modalSrc} alt="" />
+            <a
+              className="absolute z-10 top-6 right-8 text-black text-5xl font-bold"
+              href="javascript:void(0)"
+              onClick={closeModal}
+            >
+              &times;
+            </a>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
