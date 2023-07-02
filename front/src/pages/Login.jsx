@@ -21,7 +21,7 @@ export const Login = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        setData({});
+        setData({email: "", password: ""});
         navigate("/");
       }
     } catch (error) {

@@ -43,7 +43,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// Login
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -62,30 +61,41 @@ const loginUser = async (req, res) => {
         process.env.JWT_SECRET,
         {},
         (err, token) => {
-          if (err) throw err;
-          res.cookie("token", token).json(user);
+          if (err) {
+            throw err;
+          } else {
+            res.cookie("token", token, { sameSite: "None", secure: true }).json(user);
+          }
         }
       );
-    }
-    if (!match) {
+    } else {
       res.json({
         error: "Passwords do not match",
       });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 const getProfile = (req, res) => {
-  const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
-      if (err) throw err;
-      res.json(user);
-    });
-  } else {
-    res.json(null);
+  try {
+    const { token } = req.cookies;
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+        if (err) {
+          throw err;
+        } else {
+          res.json(user);
+        }
+      });
+    } else {
+      res.json(null);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

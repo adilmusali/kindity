@@ -23,8 +23,8 @@ export const Register = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        setData({});
-        toast.success("Login Successful!");
+        setData({name: "", email: "", password: ""});
+        toast.success("Account Created Successfully!");
         navigate("/login");
       }
     } catch (error) {
