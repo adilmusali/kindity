@@ -6,7 +6,7 @@ export const Button1 = () => {
       className="bg-slate-100 px-5 py-1 border text-slate-500
             hover:bg-[#ea2c58] hover:border-[#ea2c58] hover:text-white transition duration-500"
     >
-      My Account
+      Login
     </button>
   );
 };

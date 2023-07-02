@@ -16,10 +16,12 @@ import { Register } from './pages/Register'
 import { Toaster } from 'react-hot-toast'
 import Blog from './pages/Blog'
 import BlogDetail from './pages/BlogDetail'
+import { UserContextProvider } from '../context/userContext'
 
 function App() {
   return (
     <>
+    <UserContextProvider>
     <FirstHeader />
     <Header />
     <Toaster position='bottom-right' toastOptions={{duration: 2000}} />
@@ -37,6 +39,7 @@ function App() {
       <Route path='/blog/:id' element={<BlogDetail />}></Route>
     </Routes>
     <Footer />
+    </UserContextProvider>
     </>
   )
 }

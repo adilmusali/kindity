@@ -33,7 +33,7 @@ export const Login = () => {
     <div className="container">
       <div className="py-[120px]">
         <form
-          className="flex flex-col w-[500px] border border-black rounded p-5 gap-2 mx-auto"
+          className="flex flex-col w-[500px] border-2 rounded p-5 gap-2 mx-auto"
           onSubmit={loginUser}
         >
           <label>Email</label>
@@ -64,7 +64,7 @@ hover:bg-white hover:text-slate-500 border border-[#ea2c58] transition duration-
             </p>
             <Link to={"/register"}>
               <p className="text-[14px] text-[#ea2c58] font-light leading-relaxed">
-                Sign Up
+                Register
               </p>
             </Link>
           </div>

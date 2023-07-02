@@ -37,7 +37,7 @@ export const Register = () => {
       <div className="py-[120px]">
         <form
           onSubmit={registerUser}
-          className="flex flex-col w-[500px] border border-black rounded p-5 gap-2 mx-auto"
+          className="flex flex-col w-[500px] border-2 rounded p-5 gap-2 mx-auto"
         >
           <label>Name</label>
           <input

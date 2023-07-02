@@ -27,8 +27,8 @@ mongoose.connect(DB, {})
 .then(() => console.log("Database is connected!"))
 .catch((error) => console.error("Database connect error:",error))
 
-app.use(express.json())
 app.use(cookieParser());
+app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
 
