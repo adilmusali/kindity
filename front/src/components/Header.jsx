@@ -5,19 +5,27 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 const Header = () => {
   const [activeLink, setActiveLink] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
   
   useEffect(() => {
 
     const handleScroll = () => {
       const header = document.getElementById("header");
-      const toggleClass = "scrolled";
+      const responsivenav = document.getElementById("responsive-nav")
 
-      const currentScroll = window.scrollY;
-      if (currentScroll > 150) {
-        header.classList.add(toggleClass);
-      } else {
-        header.classList.remove(toggleClass);
+      if(header && responsivenav) {
+        const toggleClass = "scrolled";
+        const currentScroll = window.scrollY;
+        if (currentScroll > 150) {
+          header.classList.add(toggleClass);
+          responsivenav.classList.add(toggleClass)
+  
+        } else {
+          header.classList.remove(toggleClass);
+          responsivenav.classList.remove(toggleClass)
+        }
       }
+
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -29,6 +37,11 @@ const Header = () => {
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
+    setMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
@@ -113,11 +126,82 @@ const Header = () => {
               </div>
             </div>
             <div className="block lg:hidden">
-              <GiHamburgerMenu className="text-[30px] text-red-500" />
+              <GiHamburgerMenu className="text-[30px] text-red-500" onClick={toggleMenu}/>
             </div>
           </div>
         </div>
       </header>
+      {menuOpen && (
+        <div id="responsive-nav" className="bg-white py-2">
+          <ul className="container flex flex-col gap-[25px] uppercase text-[12px] font-medium">
+            <Link to={"/"}>
+              <li
+                className={`hover:text-[#ea2c58] transition duration-500 ${
+                  activeLink === "home" ? "text-[#ea2c58]" : ""
+                }`}
+                onClick={() => handleLinkClick("home")}
+              >
+                Home
+              </li>
+            </Link>
+            <Link to={"/gallery"}>
+              <li
+                className={`hover:text-[#ea2c58] transition duration-500 ${
+                  activeLink === "gallery" ? "text-[#ea2c58]" : ""
+                }`}
+                onClick={() => handleLinkClick("gallery")}
+              >
+                Gallery
+              </li>
+            </Link>
+            <Link to={"/about"}>
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "about" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("about")}>
+                    About
+                  </li>
+                </Link>
+                <Link to={"/event"}>
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "event" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("event")}>
+                    Events
+                  </li>
+                </Link>
+                <Link to={"/donation"}>
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "donation" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("donation")}>
+                    Donation
+                  </li>
+                </Link>
+                <Link to={"/blog"}>
+                <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "blog" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("blog")}>
+                    Blog
+                  </li>
+                </Link>
+                <Link to={"/contact"}>
+                  <li className={`hover:text-[#ea2c58] transition duration-500 ${
+                      activeLink === "contact" ? "text-[#ea2c58]" : ""
+                    }`}
+                    onClick={() => handleLinkClick("contact")}>
+                    Contact
+                  </li>
+                </Link>
+                <li>
+                <a href="#">
+                  <AiOutlineSearch  className="text-[18px]"/>
+                </a>
+              </li>
+          </ul>
+        </div>
+      )}
     </>
   );
 };
