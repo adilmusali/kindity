@@ -6,26 +6,22 @@ import { GiHamburgerMenu } from "react-icons/gi";
 const Header = () => {
   const [activeLink, setActiveLink] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   
   useEffect(() => {
 
     const handleScroll = () => {
       const header = document.getElementById("header");
-      const responsivenav = document.getElementById("responsive-nav")
+      const toggleClass = "scrolled";
+      const currentScroll = window.scrollY;
 
-      if(header && responsivenav) {
-        const toggleClass = "scrolled";
-        const currentScroll = window.scrollY;
-        if (currentScroll > 150) {
-          header.classList.add(toggleClass);
-          responsivenav.classList.add(toggleClass)
-  
-        } else {
-          header.classList.remove(toggleClass);
-          responsivenav.classList.remove(toggleClass)
-        }
+      if (currentScroll > 150) {
+        // header.classList.add(toggleClass);
+        setScrolled(true);
+      } else {
+        // header.classList.remove(toggleClass);
+        setScrolled(false);
       }
-
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -46,7 +42,7 @@ const Header = () => {
 
   return (
     <>
-      <header id="header" className="border-t">
+      <header id="header" className={`${scrolled ? "scrolled" : ""} border-t`}>
         <div className="container">
           <div className="flex flex-wrap justify-between items-center py-[30px]">
             <div>
@@ -132,7 +128,7 @@ const Header = () => {
         </div>
       </header>
       {menuOpen && (
-        <div id="responsive-nav" className="bg-white py-2">
+        <div id="responsive-nav" className={`${scrolled ? "scrolled" : ""} bg-white py-2`}>
           <ul className="container flex flex-col gap-[25px] uppercase text-[12px] font-medium">
             <Link to={"/"}>
               <li
