@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -32,6 +33,10 @@ export const Login = () => {
   return (
     <div className="container">
       <div className="py-[120px]">
+        <Helmet>
+        <meta charSet="utf-8" />
+        <title>Login</title>
+        </Helmet>
         <form
           className="flex flex-col w-[500px] border-2 rounded p-5 gap-2 mx-auto"
           onSubmit={loginUser}

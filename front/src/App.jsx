@@ -17,6 +17,7 @@ import { Toaster } from 'react-hot-toast'
 import Blog from './pages/Blog'
 import BlogDetail from './pages/BlogDetail'
 import { UserContextProvider } from '../context/userContext'
+import AddEvent from './pages/AddEvent'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
       <Route path='/register' element={<Register />}></Route>
       <Route path='/blog' element={<Blog />}></Route>
       <Route path='/blog/:id' element={<BlogDetail />}></Route>
+      <Route path='/addEvent' element={<AddEvent />}></Route>
     </Routes>
     <Footer />
     </UserContextProvider>

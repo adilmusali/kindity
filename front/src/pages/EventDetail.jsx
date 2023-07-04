@@ -6,6 +6,7 @@ import { VscCalendar } from "react-icons/vsc";
 import { TbBuildingSkyscraper } from "react-icons/tb";
 import { CiLocationArrow1 } from "react-icons/ci";
 import DetailRouting from '../components/Event/DetailRouting';
+import { Helmet } from 'react-helmet';
 
 const EventDetail = () => {
     const [data, setData] = useState("");
@@ -24,6 +25,10 @@ const EventDetail = () => {
     <section>
         <DetailRouting />
         <div className="container">
+        <Helmet>
+        <meta charSet="utf-8" />
+        <title>Event Detail</title>
+        </Helmet>
             <div className='flex flex-col gap-[30px] md:w-[650px] lg:w-[700px] xl:w-[700x] mx-auto py-[120px]'>
                 <div><img className='mx-auto w-full' src={data.img} alt="" /></div>
                 <div className='flex flex-col gap-5 lg:gap-0 lg:flex-row lg:justify-between'>

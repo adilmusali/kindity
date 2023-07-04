@@ -6,6 +6,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { LuCalendarDays } from "react-icons/lu";
 import { FaFacebookF, FaTwitter, FaGithub, FaBehance } from "react-icons/fa";
 import { GoSearch } from "react-icons/go";
+import { Helmet } from "react-helmet";
 
 const BlogDetail = () => {
   const [data, setData] = useState("");
@@ -25,6 +26,10 @@ const BlogDetail = () => {
   return (
     <section className="bg-[#f9f9ff]">
       <div className="container">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Blog Detail</title>
+    </Helmet>
         <div className="flex justify-between py-[120px] flex-wrap lg:flex-nowrap">
           <div className="flex flex-col w-full lg:w-[630px] xl:w-[770px] mb-[80px]">
             <div>
