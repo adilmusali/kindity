@@ -18,6 +18,7 @@ import Blog from './pages/Blog'
 import BlogDetail from './pages/BlogDetail'
 import { UserContextProvider } from '../context/userContext'
 import AddEvent from './pages/AddEvent'
+import AddNews from './pages/AddNews'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
       <Route path='/blog' element={<Blog />}></Route>
       <Route path='/blog/:id' element={<BlogDetail />}></Route>
       <Route path='/addEvent' element={<AddEvent />}></Route>
+      <Route path='/addNews' element={<AddNews />}></Route>
     </Routes>
     <Footer />
     </UserContextProvider>

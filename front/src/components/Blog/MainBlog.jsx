@@ -18,6 +18,11 @@ const MainBlog = () => {
     setData(res.data);
   };
 
+  const deleteData = async(id) => {
+    await axios.delete(`http://localhost:3000/kindity/blog/news/${id}`)
+    await getData()
+  }
+
   useEffect(() => {
     getData()
   }, [])
@@ -70,7 +75,7 @@ const MainBlog = () => {
                     <a href="#">
                       <li className="flex items-center mb-[15px] md:justify-end">
                         <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777]">
-                          {d.view}M Views
+                          1.2M Views
                         </span>
                         <AiOutlineEye className="text-[16px]" />
                       </li>
@@ -78,7 +83,7 @@ const MainBlog = () => {
                     <a href="#">
                       <li className="flex items-center mb-[15px] md:justify-end">
                         <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777] text-[13px] xl:text-[14px]">
-                          {d.comment} Comments
+                          06 Comments
                         </span>
                         <FaRegComment className="text-[16px]" />
                       </li>
@@ -104,6 +109,7 @@ const MainBlog = () => {
                     </p>
                   </div>
                   <div>
+                    <div className="flex justify-center gap-4 sm:gap-0 sm:justify-between flex-wrap">
                     <Link to={`${d._id}`}>
                     <button
                       className="text-[14px] uppercase bg-white text-black px-[30px] py-2 font-medium
@@ -112,6 +118,18 @@ const MainBlog = () => {
                       view more
                     </button>
                     </Link>
+                    <div className="flex gap-2">
+                      <Link to={"/addNews"} className="rounded-[50%] bg-lime-500 px-3 py-1 text-[20px] 
+                      text-white hover:bg-lime-600 duration-300">+</Link>
+                    <button
+                      onClick={() => deleteData(d._id)}
+                      className="text-[14px] uppercase bg-[#ea2c58] text-white px-[30px] py-2 font-medium
+                hover:bg-white hover:text-black duration-500"
+                    >
+                      Delete
+                    </button>
+                    </div>
+                    </div>
                   </div>
                 </div>
               </div>

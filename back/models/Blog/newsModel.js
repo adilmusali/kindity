@@ -32,14 +32,6 @@ const newsSchema = mongoose.Schema({
     user:{
         type: String,
         required: true
-    },
-    view:{
-        type: Number,
-        required: true
-    },
-    comment:{
-        type: Number,
-        required:true
     }
 },{timestamps: true})
 

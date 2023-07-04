@@ -76,7 +76,7 @@ const BlogDetail = () => {
                     <a href="#">
                       <li className="flex items-center mb-[15px] md:justify-end">
                         <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777]">
-                          {data.view}M Views
+                          1.2M Views
                         </span>
                         <AiOutlineEye className="text-[16px]" />
                       </li>
@@ -84,7 +84,7 @@ const BlogDetail = () => {
                     <a href="#">
                       <li className="flex items-center mb-[15px] md:justify-end">
                         <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777] text-[13px] xl:text-[14px]">
-                          {data.comment} Comments
+                          06 Comments
                         </span>
                         <FaRegComment className="text-[16px]" />
                       </li>
