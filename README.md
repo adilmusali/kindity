@@ -31,3 +31,8 @@ Kindity is a full-stack web application designed to showcase CRUD operations, re
     npm run dev (back)
     ```
 2. Open your browser and navigate to `http://localhost:5173`.
+
+## Screenshots from the project
+![image_1](./docs/image_1.png)
+![image_2](./docs/image_2.png)
+![image_3](./docs/image_3.png)
