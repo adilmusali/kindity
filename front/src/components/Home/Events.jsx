@@ -37,7 +37,7 @@ const Events = () => {
                   key={d._id}
                   className="flex gap-[30px] w-full lg:w-[48%] flex-wrap sm:flex-nowrap items-center"
                 >
-                  <img className="w-full sm:w-none" src={d.img} alt="" />
+                  <img className="w-full sm:w-[200px] h-[200px]" src={d.img} alt="" />
                   <div className="flex flex-col gap-3">
                     <a href="#" className="text-[12px] text-[#777777] font-light hover:text-[#ea2c58] transition duration-500">
                       25th February, 2017
