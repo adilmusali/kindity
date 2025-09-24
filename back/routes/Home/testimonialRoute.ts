@@ -1,0 +1,28 @@
+import express, { Request, Response } from "express";
+import { Testimonial } from "../../models/Home/testimonialModel";
+
+const router = express.Router();
+
+const get = async (_req: Request, res: Response) => {
+    const test = await Testimonial.find({});
+    res.send(test);
+};
+
+const post = async (req: Request, res: Response) => {
+    const uploadData = req.body;
+    const test = new Testimonial(uploadData);
+    await test.save();
+    res.send(test);
+};
+
+const del = async (req: Request, res: Response) => {
+    const findId = req.params.id;
+    await Testimonial.findByIdAndDelete(findId);
+    res.send({ message: "Successfully Deleted!" });
+};
+
+router.get("/", get);
+router.post("/", post);
+router.delete("/:id", del);
+
+export default router;
