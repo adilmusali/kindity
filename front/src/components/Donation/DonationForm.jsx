@@ -1,87 +1,97 @@
-import React from "react";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useState } from 'react';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const DonationForm = () => {
-  const [data, setData] = useState([]);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [amount, setAmount] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/donation");
-    setData(res.data);
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  useEffect(() => {
-    getData();
-  }, []);
+    if (!stripe || !elements || !amount) {
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const { data: { clientSecret } } = await axios.post(
+      'http://localhost:3000/kindity/payment/create-payment-intent',
+      { amount: Number(amount) },
+    )
+
+    const cardElement = elements.getElement(CardElement);
+    const paymentResult = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: {
+          name: name,
+          email: email,
+        },
+      },
+    });
+
+    if (paymentResult.error) {
+      toast.error(paymentResult.error.message);
+      setIsProcessing(false);
+    } else {
+      if (paymentResult.paymentIntent.status === 'succeeded') {
+        toast.success('Donation successful! Thank you for your generosity.');
+        setAmount('');
+        setName('');
+        setEmail('');
+        cardElement.clear();
+      }
+      setIsProcessing(false);
+    }
+  }
 
   return (
     <section>
-      <div className="container">
-        <div className="py-[120px]">
-          <div className="flex flex-wrap gap-[40px] lg:gap-0 lg:flex-nowrap lg:justify-between">
-            <div className="flex flex-col gap-[40px]">
-              {data.map((d) => {
-                return (
-                  <div key={d._id}>
-                    <h4 className="text-[20px] font-semibold pb-[15px]">{d.header}</h4>
-                    <p className="text-[14px] font-light text-[#777777] leading-6 lg:w-[500px]">
-                      {d.desc}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-              <form action="" className="flex flex-col gap-[15px] justify-center w-full xl:w-[560px]">
-                <select className="border text-[#999999] text-[13px] 
-                px-[20px] py-[10px] focus:outline-none" name="" id="">
-                  <option value="">Project you want to donate</option>
-                  <option value="">Project you want to donate</option>
-                  <option value="">Project you want to donate</option>
-                  <option value="">Project you want to donate</option>
-                </select>
-                <div className="flex flex-col lg:flex-row justify-between gap-[15px]">
-                  <input className="border text-[13px] px-[20px] py-[10px] 
-                  focus:outline-none focus:ring transition duration-100 w-full" type="text" placeholder="Name" />
-                  <input className="border text-[13px] px-[20px] py-[10px] 
-                  focus:outline-none focus:ring transition duration-100 w-full" type="email" placeholder="Email" />
-                </div>
-                <input
-                  className="border text-[13px] px-[20px] py-[10px] 
-                  focus:outline-none focus:ring transition duration-100"
-                  type="number"
-                  placeholder="Donation amount(USD)"
-                />
-                <textarea
-                  className="border text-[13px] px-[20px] py-[10px] 
-                  focus:outline-none focus:ring transition duration-100 resize-none h-[120px]"
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="10"
-                  placeholder="Message"
-                ></textarea>
-                <div className="flex flex-row-reverse">
-                  <button
-                    className="text-[14px] uppercase font-semibold px-[30px] py-2 border 
-                border-[#ea2c58] bg-[#ea2c58] 
-                hover:bg-transparent text-white hover:text-[#ea2c58] transition duration-500"
+      <div className='container'>
+        <div className='py-[120px]'>
+          <div className='flex justify-center'>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-[15px] justify-center w-full xl:w-[560px]'>
+              <h3 className='text-2xl font-semibold mb-4 text-center'>Make a Secure Donation</h3>
+              <input 
+                className='border text-[13px] px-[20px] py-[10px] focus:outline-none focus:ring transition duration-100 w-full'
+                type="text" 
+                placeholder='Name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required  
+              />
+              <input
+                className="border text-[13px] px-[20px] py-[10px] focus:outline-none focus:ring transition duration-100"
+                type="number"
+                placeholder="Donation amount (USD)"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                required
+              />
+              <div className='border p-[10px]'>
+                <CardElement options={{ style: { base: { fontSize: '14px' } } }} />
+              </div>
+              <div className='flex flex-row-reverse'>
+                <button 
+                  type='submit' 
+                  disabled={!stripe || isProcessing}
+                  className='text-[14px] uppercase font-semibold px-[30px] py-3 border border-[#ea2c58] bg-[#ea2c58] disabled:bg-red-300 hover:bg-transparent text-white hover:text-[#ea2c58] transition duration-500'
                   >
-                    Donate Now
+                    {isProcessing ? 'Processing...' : `Donate $${amount || '0'}`}
                   </button>
-                </div>
-              </form>
-          </div>
-          <div className="flex justify-center items-center gap-5 pt-[70px] flex-wrap">
-            <span className="text-[14px] font-light text-[#777777]">We Accept:</span>
-            <div><img
-              src="https://preview.colorlib.com/theme/kindity/img/master-card.png.webp"
-              alt=""
-            /></div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
 export default DonationForm;

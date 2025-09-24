@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registrationSchema } from "../schema/userSchema"; // Import our new schema
+import { registrationSchema } from "../schema/userSchema";
 
 export const Register = () => {
   const navigate = useNavigate();

@@ -10,6 +10,9 @@ export function UserContextProvider({children}) {
             axios.get('http://localhost:3000/profile').then(({data}) => {
                 setUser(data)
             })
+            .catch(() => {
+
+            });
         }
     }, [])
 

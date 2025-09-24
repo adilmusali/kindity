@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+dotenv.config()
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
@@ -16,8 +17,7 @@ import contactRoute from "./routes/Contact/contactRoute";
 import newsRoute from "./routes/Blog/newsRoute";
 import optionsRoute from "./routes/Blog/optionsRoute";
 import authRoutes from "./routes/authRoutes";
-
-dotenv.config()
+import paymentRoutes from "./routes/paymentRoutes";
 
 const app = express()
 
@@ -55,6 +55,9 @@ app.use("/kindity/blog/options", optionsRoute)
 
 //Auth
 app.use("/", authRoutes)
+
+//Payment
+app.use("/kindity/payment", paymentRoutes);
 
 const PORT = process.env.PORT || 3000;
 
