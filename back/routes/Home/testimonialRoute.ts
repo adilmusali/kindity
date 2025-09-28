@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { Testimonial } from "../../models/Home/testimonialModel";
+import { protect, isAdmin } from "../../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ const del = async (req: Request, res: Response) => {
 };
 
 router.get("/", get);
-router.post("/", post);
-router.delete("/:id", del);
+router.post("/", protect, isAdmin, post);
+router.delete("/:id", protect, isAdmin, del);
 
 export default router;

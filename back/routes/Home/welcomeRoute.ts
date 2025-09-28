@@ -1,5 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import { WelcomeModel } from '../../models/Home/welcomeModel';
+import { protect, isAdmin } from "../../middleware/authMiddleware";
 
 const router: Router = express.Router();
 
@@ -22,7 +23,7 @@ const del = async (req: Request, res: Response): Promise<void> => {
 };
 
 router.get("/", get);
-router.post("/", post);
-router.delete("/:id", del);
+router.post("/", protect, isAdmin, post);
+router.delete("/:id", protect, isAdmin, del);
 
 export default router;

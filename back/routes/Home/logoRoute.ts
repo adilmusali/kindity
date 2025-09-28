@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import Logo from "../../models/Home/logoModel";
+import { protect, isAdmin } from "../../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -31,8 +32,8 @@ const put = async (req: Request, res: Response) => {
 };
 
 router.get("/", get);
-router.post("/", post);
-router.delete("/:id", del);
-router.put("/:id", put);
+router.post("/", protect, isAdmin, post);
+router.delete("/:id", protect, isAdmin, del);
+router.put("/:id", protect, isAdmin, put);
 
 export default router;

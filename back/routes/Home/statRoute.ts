@@ -1,5 +1,6 @@
 import express, { Router, Request, Response } from 'express';
-import { StatModel } from '../../models/Home/statModel'; // Assuming you have a TypeScript model
+import { StatModel } from '../../models/Home/statModel';
+import { protect, isAdmin } from "../../middleware/authMiddleware";
 
 const router: Router = express.Router();
 
@@ -31,8 +32,8 @@ const put = async (req: Request, res: Response) => {
 };
 
 router.get("/", get);
-router.post("/", post);
-router.delete("/:id", del);
-router.put("/:id", put);
+router.post("/", protect, isAdmin, post);
+router.delete("/:id", protect, isAdmin, del);
+router.put("/:id", protect, isAdmin, put);
 
 export default router;

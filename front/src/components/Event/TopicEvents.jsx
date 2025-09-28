@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
+import { UserContext } from "../../../context/userContext";
 
 const TopicEvents = () => {
   const [data, setData] = useState([]);
   const [value, setValue] = useState("");
   const [sortAsc, setSortAsc] = useState(true)
+  const { user } = useContext(UserContext);
 
   const getData = async () => {
     const res = await axios.get("http://localhost:3000/kindity/home/events");
@@ -43,7 +44,9 @@ const TopicEvents = () => {
               placeholder="Search Events..."
             />
             <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
-            <Link to={"/addEvent"}><BsPlusCircleFill className="text-[30px] sm:text-[40px] text-lime-500"/></Link>
+              {user && user.role === 'admin' && (
+                <Link to={"/addEvent"}><BsPlusCircleFill className="text-[30px] sm:text-[40px] text-lime-500"/></Link>
+              )}
             <button
               className="px-[50px] py-2 text-white bg-[#ea2c58] text-[12px] sm:text-base
               hover:bg-white hover:text-slate-500 border border-[#ea2c58] transition duration-500 rounded-[20px]"
@@ -78,8 +81,10 @@ const TopicEvents = () => {
                       >
                         25th February, 2017
                       </a>
-                      <button onClick={() => deleteData(d._id)} className="text-[16px] lg:text-[14px] xl:text-[16px] bg-red-500 text-white hover:bg-red-600 duration-300 px-3">Delete</button>
-                      </div>
+                      {user && user.role === 'admin' && (
+                        <button onClick={() => deleteData(d._id)} className="text-[16px] lg:text-[14px] xl:text-[16px] bg-red-500 text-white hover:bg-red-600 duration-300 px-3">Delete</button>
+                      )}
+                        </div>
                       <Link to={`${d._id}`}>
                         <h4 className="text-[18px] font-semibold hover:text-[#ea2c58] transition duration-500">
                           {d.header}

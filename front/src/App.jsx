@@ -19,6 +19,7 @@ import BlogDetail from './pages/BlogDetail'
 import { UserContextProvider } from '../context/userContext'
 import AddEvent from './pages/AddEvent'
 import AddNews from './pages/AddNews'
+import AdminRoute from './components/AdminRoute'
 
 function App() {
   return (
@@ -39,8 +40,8 @@ function App() {
       <Route path='/register' element={<Register />}></Route>
       <Route path='/blog' element={<Blog />}></Route>
       <Route path='/blog/:id' element={<BlogDetail />}></Route>
-      <Route path='/addEvent' element={<AddEvent />}></Route>
-      <Route path='/addNews' element={<AddNews />}></Route>
+      <Route path='/addEvent' element={<AdminRoute><AddEvent /></AdminRoute>}></Route>
+      <Route path='/addNews' element={<AdminRoute><AddNews /></AdminRoute>}></Route>
     </Routes>
     <Footer />
     </UserContextProvider>

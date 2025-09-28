@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   FaRegUser,
   FaRegComment,
@@ -9,9 +9,12 @@ import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import axios from "axios";
 import BlogInfo from "../BlogInfo";
+import { UserContext } from "../../../context/userContext";
 
 const MainBlog = () => {
   const [data,setData] = useState([])
+  const { user } = useContext(UserContext);
+
 
   const getData = async () => {
     const res = await axios.get("http://localhost:3000/kindity/blog/news");
@@ -118,17 +121,19 @@ const MainBlog = () => {
                       view more
                     </button>
                     </Link>
-                    <div className="flex gap-2">
-                      <Link to={"/addNews"} className="rounded-[50%] bg-lime-500 px-3 py-1 text-[20px] 
-                      text-white hover:bg-lime-600 duration-300">+</Link>
-                    <button
-                      onClick={() => deleteData(d._id)}
-                      className="text-[14px] uppercase bg-[#ea2c58] text-white px-[30px] py-2 font-medium
-                hover:bg-white hover:text-black duration-500"
-                    >
-                      Delete
-                    </button>
-                    </div>
+                    {user && user.role === 'admin' && (
+                      <div className="flex gap-2">
+                        <Link to={"/addNews"} className="rounded-[50%] bg-lime-500 px-3 py-1 text-[20px] 
+                        text-white hover:bg-lime-600 duration-300">+</Link>
+                      <button
+                        onClick={() => deleteData(d._id)}
+                        className="text-[14px] uppercase bg-[#ea2c58] text-white px-[30px] py-2 font-medium
+                  hover:bg-white hover:text-black duration-500"
+                      >
+                        Delete
+                      </button>
+                      </div>
+                    )}
                     </div>
                   </div>
                 </div>
