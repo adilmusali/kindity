@@ -14,6 +14,8 @@ const DonationForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    console.log('Checking Stripe status:', { stripe, elements, amount });
+
     if (!stripe || !elements || !amount) {
       return;
     }

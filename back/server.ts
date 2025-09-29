@@ -31,6 +31,9 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+//Payment
+app.use("/kindity/payment", paymentRoutes);
+
 //Home
 app.use("/kindity/home/statistics", statRoute)
 app.use("/kindity/home/welcome", welcomeRoute)
@@ -56,8 +59,6 @@ app.use("/kindity/blog/options", optionsRoute)
 //Auth
 app.use("/", authRoutes)
 
-//Payment
-app.use("/kindity/payment", paymentRoutes);
 
 const PORT = process.env.PORT || 3000;
 
