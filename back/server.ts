@@ -19,6 +19,7 @@ import optionsRoute from "./routes/Blog/optionsRoute";
 import authRoutes from "./routes/authRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import userRoutes from "./routes/userRoutes";
+import adminRoutes from "./routes/adminRoutes";
 
 const app = express()
 
@@ -62,6 +63,9 @@ app.use("/", authRoutes)
 
 // User Profile & History
 app.use('/api/users', userRoutes);
+
+// Admin Routes
+app.use("/api/admin", adminRoutes);
 
 
 const PORT = process.env.PORT || 3000;

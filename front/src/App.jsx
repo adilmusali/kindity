@@ -23,6 +23,7 @@ import AdminRoute from './components/AdminRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 import DonationHistory from './pages/DonationHistory'
 import Profile from './pages/Profile'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
       <Route path='/addNews' element={<AdminRoute><AddNews /></AdminRoute>}></Route>
       <Route path='/donations' element={<ProtectedRoute><DonationHistory /></ProtectedRoute>}></Route>
       <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>
+      <Route path='/admin/dashboard' element={<AdminRoute><AdminDashboard /></AdminRoute>}></Route>
     </Routes>
     <Footer />
     </UserContextProvider>

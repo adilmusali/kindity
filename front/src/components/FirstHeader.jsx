@@ -42,6 +42,9 @@ const FirstHeader = () => {
           {user ? (
             <>
               <span className="text-slate-600 font-medium">Welcome, {user.name}!</span>
+              {user.role === 'admin' && (
+                <Link to="/admin/dashboard" className="px-4 py-1 font-bold text-[#ea2c58] hover:underline">Admin</Link>
+              )}
               <Link to="/profile" className="px-4 py-1 text-slate-500 hover:text-[#ea2c58]">Profile</Link>
               <Link to="/donations" className="px-4 py-1 text-slate-500 hover:text-[#ea2c58]">History</Link>
               <button
