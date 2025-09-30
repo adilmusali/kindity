@@ -36,13 +36,14 @@ const FirstHeader = () => {
         <div className="flex font-[Poppins] gap-2 items-center">
           <select className="bg-slate-100 px-5 py-1 border text-slate-500 cursor-pointer">
             <option value="English">English</option>
-            <option value="Bangla">Bangla</option>
           </select>
           
           {/*Check if user exists */}
           {user ? (
             <>
               <span className="text-slate-600 font-medium">Welcome, {user.name}!</span>
+              <Link to="/profile" className="px-4 py-1 text-slate-500 hover:text-[#ea2c58]">Profile</Link>
+              <Link to="/donations" className="px-4 py-1 text-slate-500 hover:text-[#ea2c58]">History</Link>
               <button
                 onClick={handleLogout}
                 className="bg-slate-100 px-5 py-1 border text-slate-500 hover:bg-[#ea2c58] hover:border-[#ea2c58] hover:text-white transition duration-500"

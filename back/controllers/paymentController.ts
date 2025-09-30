@@ -5,20 +5,28 @@ import DonationHistoryModel from '../models/donationHistoryModel';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export const createPaymentIntent: RequestHandler = async (req, res) => {
+  console.log('--- 1. /create-payment-intent endpoint hit ---');
+  
   const { amount } = req.body;
-
   const user = req.user;
 
   if (!user) {
+    console.error('--- ERROR: No user found on request. Middleware might have failed. ---');
     res.status(401).json({ error: 'User not found. Please log in.' });
     return;
   }
 
   if (!amount || amount <= 0) {
+    console.error(`--- ERROR: Invalid amount received: ${amount} ---`);
+    res.status(400).json({ error: 'A valid amount is required.' });
     return;
   }
+  
+  console.log(`--- 2. Preparing to create payment for amount: ${amount}, user: ${user.email} ---`);
 
   try {
+    console.log('--- 3. Contacting Stripe to create Payment Intent... ---');
+    
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount * 100,
       currency: 'usd',
@@ -27,11 +35,12 @@ export const createPaymentIntent: RequestHandler = async (req, res) => {
         userId: user._id.toString(),
       }
     });
+    
+    console.log('--- 4. Stripe responded successfully. Sending clientSecret to frontend. ---');
+    res.send({ clientSecret: paymentIntent.client_secret });
 
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
   } catch (error: any) {
+    console.error('--- 5. ERROR occurred while contacting Stripe ---', error.message);
     res.status(500).json({ error: error.message });
   }
 };

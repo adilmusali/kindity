@@ -20,6 +20,9 @@ import { UserContextProvider } from '../context/userContext'
 import AddEvent from './pages/AddEvent'
 import AddNews from './pages/AddNews'
 import AdminRoute from './components/AdminRoute'
+import ProtectedRoute from './components/ProtectedRoute'
+import DonationHistory from './pages/DonationHistory'
+import Profile from './pages/Profile'
 
 function App() {
   return (
@@ -42,6 +45,8 @@ function App() {
       <Route path='/blog/:id' element={<BlogDetail />}></Route>
       <Route path='/addEvent' element={<AdminRoute><AddEvent /></AdminRoute>}></Route>
       <Route path='/addNews' element={<AdminRoute><AddNews /></AdminRoute>}></Route>
+      <Route path='/donations' element={<ProtectedRoute><DonationHistory /></ProtectedRoute>}></Route>
+      <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>
     </Routes>
     <Footer />
     </UserContextProvider>

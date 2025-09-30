@@ -18,21 +18,22 @@ import newsRoute from "./routes/Blog/newsRoute";
 import optionsRoute from "./routes/Blog/optionsRoute";
 import authRoutes from "./routes/authRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
+import userRoutes from "./routes/userRoutes";
 
 const app = express()
-
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
 
 const corsOptions = {
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true,
 };
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
-//Payment
 app.use("/kindity/payment", paymentRoutes);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 
 //Home
 app.use("/kindity/home/statistics", statRoute)
@@ -58,6 +59,9 @@ app.use("/kindity/blog/options", optionsRoute)
 
 //Auth
 app.use("/", authRoutes)
+
+// User Profile & History
+app.use('/api/users', userRoutes);
 
 
 const PORT = process.env.PORT || 3000;
