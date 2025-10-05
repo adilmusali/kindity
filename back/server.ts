@@ -4,14 +4,15 @@ dotenv.config()
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import statRoute from "./routes/Home/statRoute";
-import welcomeRoute from "./routes/Home/welcomeRoute";
-import causesRoute from "./routes/Home/causesRoute";
-import featuresRoute from "./routes/Home/featuresRoute";
-import eventsRoute from "./routes/Home/eventsRoute";
-import testimonialRoute from "./routes/Home/testimonialRoute";
+// import statRoute from "./routes/Home/statRoute";
+// import welcomeRoute from "./routes/Home/welcomeRoute";
+// import causesRoute from "./routes/Home/causesRoute";
+// import featuresRoute from "./routes/Home/featuresRoute";
+// import eventsRoute from "./routes/Home/eventsRoute";
+// import testimonialRoute from "./routes/Home/testimonialRoute";
+// import logoRoute from "./routes/Home/logoRoute";
+import homeContentRoute from './routes/Home/homeContentRoute';
 import imagesRoute from "./routes/Gallery/imagesRoute";
-import logoRoute from "./routes/Home/logoRoute";
 import donationRoute from "./routes/Donation/donationRoute";
 import contactRoute from "./routes/Contact/contactRoute";
 import newsRoute from "./routes/Blog/newsRoute";
@@ -37,13 +38,14 @@ app.use(express.urlencoded({ extended: false }));
 
 
 //Home
-app.use("/kindity/home/statistics", statRoute)
-app.use("/kindity/home/welcome", welcomeRoute)
-app.use("/kindity/home/causes", causesRoute)
-app.use("/kindity/home/features", featuresRoute)
-app.use("/kindity/home/events", eventsRoute)
-app.use("/kindity/home/testimonial", testimonialRoute)
-app.use("/kindity/home/logo", logoRoute)
+app.use("/api/home-content", homeContentRoute);
+// app.use("/kindity/home/statistics", statRoute)
+// app.use("/kindity/home/welcome", welcomeRoute)
+// app.use("/kindity/home/causes", causesRoute)
+// app.use("/kindity/home/features", featuresRoute)
+// app.use("/kindity/home/events", eventsRoute)
+// app.use("/kindity/home/testimonial", testimonialRoute)
+// app.use("/kindity/home/logo", logoRoute)
 
 //Gallery
 app.use("/kindity/gallery", imagesRoute)
