@@ -2,21 +2,8 @@ import React from "react";
 import { IoDiamondOutline } from "react-icons/io5";
 import { CiCoffeeCup } from "react-icons/ci";
 import { TfiWheelchair } from "react-icons/tfi";
-import axios from "axios";
-import { useEffect, useState } from "react";
 
-const Features = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/home/features");
-    setData(res.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+const Features = ({ data }) => {
   const getIconComponent = (iconName) => {
     switch (iconName) {
       case "IoDiamondOutline":
@@ -48,7 +35,7 @@ const Features = () => {
               </p>
             </div>
             <div className="flex gap-[50px] lg:gap-0 justify-center lg:justify-between text-center flex-wrap lg:flex-nowrap">
-            {data.map((d) => {
+            {data && data.map((d) => {
                 return(
                     <div
                     key={d._id}

@@ -1,20 +1,6 @@
 import React from 'react'
-import axios from "axios";
-import { useEffect, useState } from "react";
 
-
-const Testimonial = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/home/testimonial");
-    setData(res.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+const Testimonial = ({ data }) => {
   return (
     <section className='bg-[#f9f9ff]'>
         <div className="container">
@@ -24,7 +10,7 @@ const Testimonial = () => {
                     <p className='text-[14px] text-[#777777] font-light leading-6'>Las Vegas has more than 100,000 hotel rooms to choose from. There is something for every budget, and enough.</p>
                 </div>
                 <div className='flex justify-between gap-[50px] flex-wrap sm:flex-nowrap w-full lg:w-[70%]'>
-                    {data.map((d) => {
+                    {data && data.map((d) => {
                         return(
                             <div key={d._id} className='flex w-full sm:w-none flex-col gap-[30px] text-center bg-white p-[40px]'>
                         <div className='mx-auto'><img src={d.img} alt="" /></div>

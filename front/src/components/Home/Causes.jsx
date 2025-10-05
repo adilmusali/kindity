@@ -1,20 +1,6 @@
 import React from "react";
-import axios from "axios";
-import { useEffect, useState } from "react";
 
-const Causes = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    const res = await axios.get(
-      "http://localhost:3000/kindity/home/causes"
-    );
-    setData(res.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+const Causes = ({ data }) => {
   return (
     <section className="bg-[#f9f9ff]">
       <div className="container">
@@ -30,7 +16,7 @@ const Causes = () => {
             </p>
           </div>
           <div className="flex justify-center md:justify-between flex-wrap lg:flex-nowrap gap-5 lg:gap-0">
-            {data.map((d) => {
+            {data && data.map((d) => {
                 return(
             <div key={d._id} className="flex flex-col bg-white w-[70%] md:w-[48%] lg:w-[31%] relative">
               <div className="relative">

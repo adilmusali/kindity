@@ -7,7 +7,7 @@ export function UserContextProvider({children}) {
     const [user,setUser] = useState(null);
     useEffect(() => {
         if(!user) {
-            axios.get('http://localhost:3000/profile').then(({data}) => {
+            axios.get(`${import.meta.env.VITE_API_URL}/profile`).then(({data}) => {
                 setUser(data)
             })
             .catch(() => {

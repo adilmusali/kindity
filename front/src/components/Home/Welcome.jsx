@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BsDatabase } from "react-icons/bs";
 import { RiBook3Line } from "react-icons/ri";
 import { FiUsers } from "react-icons/fi";
-import axios from "axios";
 import Stat from "./Stat";
 
-const Welcome = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/home/welcome");
-    setData(res.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+const Welcome = ({ welcomeData, statData }) => {
   return (
     <section>
       <div className="container">
-        <Stat />
-        {data.map((d) => {
-          return (
+        <Stat data={statData} />
+        {welcomeData && welcomeData.map((d) => (
             <div
               className="flex gap-[70px] pt-[70px] pb-[120px] items-center flex-wrap lg:flex-nowrap"
               key={d._id}
@@ -68,8 +55,7 @@ const Welcome = () => {
                 </div>
               </div>
             </div>
-          );
-        })}
+        ))}
       </div>
     </section>
   );

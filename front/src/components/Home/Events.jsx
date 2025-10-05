@@ -1,20 +1,7 @@
 import React from "react";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Events = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/home/events");
-    setData(res.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+const Events = ({ data }) => {
   return (
     <section>
       <div className="container">
@@ -29,7 +16,7 @@ const Events = () => {
             </p>
           </div>
           <div className="flex justify-center gap-5 lg:gap-0 lg:justify-between flex-wrap lg:flex-nowrap">
-            {data
+            {data && data
             .slice(0,2)
             .map((d) => {
               return (
