@@ -12,11 +12,16 @@ import mongoose from 'mongoose';
 // import testimonialRoute from "./routes/Home/testimonialRoute";
 // import logoRoute from "./routes/Home/logoRoute";
 import homeContentRoute from './routes/Home/homeContentRoute';
+import eventsRoute from "./routes/eventsRoutes";
+import aboutRoute from "./routes/aboutRoutes";
+import blogRoute from "./routes/blogRoutes";
+import newsRoute from './routes/newsRoutes';
+import galleryRoute from './routes/galleryRoutes';
 import imagesRoute from "./routes/Gallery/imagesRoute";
 import donationRoute from "./routes/Donation/donationRoute";
 import contactRoute from "./routes/Contact/contactRoute";
-import newsRoute from "./routes/Blog/newsRoute";
-import optionsRoute from "./routes/Blog/optionsRoute";
+// import newsRoute from "./routes/Blog/newsRoute";
+// import optionsRoute from "./routes/Blog/optionsRoute";
 import authRoutes from "./routes/authRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import userRoutes from "./routes/userRoutes";
@@ -31,7 +36,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-app.use("/kindity/payment", paymentRoutes);
+app.use("/api/payment", paymentRoutes);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,8 +52,18 @@ app.use("/api/home-content", homeContentRoute);
 // app.use("/kindity/home/testimonial", testimonialRoute)
 // app.use("/kindity/home/logo", logoRoute)
 
+//Event
+app.use('/api/events', eventsRoute);
+
+//About
+app.use('/api/about', aboutRoute);
+
+//News
+app.use('/api/news', newsRoute);
+
 //Gallery
-app.use("/kindity/gallery", imagesRoute)
+// app.use("/kindity/gallery", imagesRoute)
+app.use('/api/gallery', galleryRoute)
 
 //Donation
 app.use("/kindity/donation", donationRoute)
@@ -57,8 +72,7 @@ app.use("/kindity/donation", donationRoute)
 app.use("/kindity/contact", contactRoute)
 
 //Blog
-app.use("/kindity/blog/news", newsRoute)
-app.use("/kindity/blog/options", optionsRoute)
+app.use("/api/blog", blogRoute);
 
 //Auth
 app.use("/", authRoutes)

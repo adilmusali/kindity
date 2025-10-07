@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   FaRegUser,
   FaRegComment,
@@ -11,24 +11,14 @@ import axios from "axios";
 import BlogInfo from "../BlogInfo";
 import { UserContext } from "../../../context/userContext";
 
-const MainBlog = () => {
-  const [data,setData] = useState([])
+const MainBlog = ({ data }) => {
   const { user } = useContext(UserContext);
+  const [posts, setPosts] = useState(data);
 
-
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/blog/news");
-    setData(res.data);
-  };
-
-  const deleteData = async(id) => {
-    await axios.delete(`http://localhost:3000/kindity/blog/news/${id}`)
-    await getData()
+  const deleteData = async (id) => {
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/news/${id}`)
+    setPosts(currentPosts => currentPosts.filter(p => p._id !== id));
   }
-
-  useEffect(() => {
-    getData()
-  }, [])
 
   return (
     <section className="bg-[#f9f9ff]">
@@ -36,7 +26,7 @@ const MainBlog = () => {
         <div className="flex justify-between flex-wrap lg:flex-nowrap gap-[30px] xl:gap-0 pb-[95px]">
           <div className="flex">
             <div className="flex flex-col gap-[40px]">
-              {data.map((d) => {
+              {posts && posts.map((d) => {
                 return(
                   <div className="flex flex-wrap md:flex-nowrap" key={d._id}>
                 <div className="text-[14px] font-light md:px-[30px] pt-[30px]">

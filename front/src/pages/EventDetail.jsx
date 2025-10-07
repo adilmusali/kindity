@@ -9,17 +9,21 @@ import DetailRouting from '../components/Event/DetailRouting';
 import { Helmet } from 'react-helmet';
 
 const EventDetail = () => {
-    const [data, setData] = useState("");
+    const [data, setData] = useState(null);
     const params = useParams();
   
-    const getData = async () => {
-      const res = await axios.get(`http://localhost:3000/kindity/home/events/${params.id}`);
-      setData(res.data);
-    };
-  
     useEffect(() => {
+      const getData = async () => {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/events/${params.id}`);
+        setData(res.data);
+      }
+
       getData();
-    }, []);
+    }, [params.id]);
+
+    if (!data) {
+      return <div>Loading...</div>;
+    }  
 
   return (
     <section>

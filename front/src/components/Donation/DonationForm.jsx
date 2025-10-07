@@ -23,7 +23,7 @@ const DonationForm = () => {
     setIsProcessing(true);
 
     const { data: { clientSecret } } = await axios.post(
-      'http://localhost:3000/kindity/payment/create-payment-intent',
+      `${import.meta.env.VITE_API_URL}/api/payment/create-payment-intent`,
       { amount: Number(amount) },
     )
 

@@ -11,12 +11,12 @@ const TopicEvents = () => {
   const { user } = useContext(UserContext);
 
   const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/home/events");
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/events`);
     setData(res.data);
   };
 
   const deleteData = async(id) => {
-    await axios.delete(`http://localhost:3000/kindity/home/events/${id}`)
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/events/${id}`)
     await getData()
   }
 

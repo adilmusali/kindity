@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-const Images = () => {
-  const [data, setData] = useState([]);
+const Images = ({ data }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalSrc, setModalSrc] = useState("");
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/kindity/gallery");
-        setData(res.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    getData();
-  }, []);
 
   const showModal = (src) => {
     setModalVisible(true);

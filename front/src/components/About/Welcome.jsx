@@ -1,25 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BsDatabase } from "react-icons/bs";
 import { RiBook3Line } from "react-icons/ri";
 import { FiUsers } from "react-icons/fi";
-import axios from "axios";
 
-const Welcome = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/home/welcome");
-    setData(res.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+const Welcome = ({ data }) => {
   return (
     <section>
       <div className="container">
-        {data.map((d) => {
+        {data && data.map((d) => {
           return (
             <div
               className="flex gap-[70px] py-[120px] items-center flex-wrap lg:flex-nowrap"

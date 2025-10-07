@@ -1,23 +1,11 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-const GeneralCategories = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    const res = await axios.get("http://localhost:3000/kindity/blog/options");
-    setData(res.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+const GeneralCategories = ({ data }) => {
   return (
     <section className="bg-[#f9f9ff]">
       <div className="container">
         <div className="flex lg:justify-between flex-col items-center gap-[30px] lg:gap-0 lg:flex-row py-[80px]">
-          {data.map((d) => {
+          {data && data.map((d) => {
             return (
               <div key={d._id}
               className={`cursor-pointer bg-no-repeat p-[20px]`}

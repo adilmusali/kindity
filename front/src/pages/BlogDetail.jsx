@@ -7,21 +7,24 @@ import { LuCalendarDays } from "react-icons/lu";
 import { FaFacebookF, FaTwitter, FaGithub, FaBehance } from "react-icons/fa";
 import { GoSearch } from "react-icons/go";
 import { Helmet } from "react-helmet";
+import BlogInfo from "../components/BlogInfo";
 
 const BlogDetail = () => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState(null);
   const params = useParams();
 
-  const getData = async () => {
-    const res = await axios.get(
-      `http://localhost:3000/kindity/blog/news/${params.id}`
-    );
-    setData(res.data);
-  };
-
   useEffect(() => {
+    const getData = async () => {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/news/${params.id}`);
+      setData(res.data);
+    }
+
     getData();
-  }, []);
+  }, [params.id]);
+
+  if (!data) {
+    return <div className="text-center py-40">Loading...</div>;
+  }  
 
   return (
     <section className="bg-[#f9f9ff]">
