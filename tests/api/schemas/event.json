@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "required": ["_id", "img", "header", "desc"],
+  "additionalProperties": true,
+  "properties": {
+    "_id": { "type": "string" },
+    "img": { "type": "string" },
+    "header": { "type": "string" },
+    "desc": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "__v": { "type": "number" }
+  }
+}

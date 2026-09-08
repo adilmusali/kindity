@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "required": ["news", "options"],
+  "additionalProperties": false,
+  "properties": {
+    "news": {
+      "type": "array",
+      "items": { "$ref": "news.json" }
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["_id", "header", "desc", "img"],
+        "additionalProperties": true,
+        "properties": {
+          "_id": { "type": "string" },
+          "header": { "type": "string" },
+          "desc": { "type": "string" },
+          "img": { "type": "string" }
+        }
+      }
+    }
+  }
+}

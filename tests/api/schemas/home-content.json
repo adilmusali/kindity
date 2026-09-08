@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "required": ["statistics", "welcome", "causes", "features", "events", "testimonial", "logo"],
+  "additionalProperties": false,
+  "properties": {
+    "statistics": { "type": "array" },
+    "welcome": { "type": "array" },
+    "causes": { "type": "array" },
+    "features": { "type": "array" },
+    "events": { "type": "array" },
+    "testimonial": { "type": "array" },
+    "logo": { "type": "array" }
+  }
+}

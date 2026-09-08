@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": ["_id", "header", "desc", "img", "category1", "category2", "category3", "category4", "user"],
+  "additionalProperties": true,
+  "properties": {
+    "_id": { "type": "string" },
+    "header": { "type": "string" },
+    "desc": { "type": "string" },
+    "img": { "type": "string" },
+    "category1": { "type": "string" },
+    "category2": { "type": "string" },
+    "category3": { "type": "string" },
+    "category4": { "type": "string" },
+    "user": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "__v": { "type": "number" }
+  }
+}

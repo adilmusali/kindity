@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": ["welcome", "features", "testimonial", "logo"],
+  "additionalProperties": false,
+  "properties": {
+    "welcome": { "type": "array" },
+    "features": { "type": "array" },
+    "testimonial": { "type": "array" },
+    "logo": { "type": "array" }
+  }
+}
