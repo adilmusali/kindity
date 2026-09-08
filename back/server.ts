@@ -1,94 +1,14 @@
-import express from 'express';
 import dotenv from 'dotenv';
-dotenv.config()
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
+dotenv.config();
 import mongoose from 'mongoose';
-// import statRoute from "./routes/Home/statRoute";
-// import welcomeRoute from "./routes/Home/welcomeRoute";
-// import causesRoute from "./routes/Home/causesRoute";
-// import featuresRoute from "./routes/Home/featuresRoute";
-// import eventsRoute from "./routes/Home/eventsRoute";
-// import testimonialRoute from "./routes/Home/testimonialRoute";
-// import logoRoute from "./routes/Home/logoRoute";
-import homeContentRoute from './routes/Home/homeContentRoute';
-import eventsRoute from "./routes/eventsRoutes";
-import aboutRoute from "./routes/aboutRoutes";
-import blogRoute from "./routes/blogRoutes";
-import newsRoute from './routes/newsRoutes';
-import galleryRoute from './routes/galleryRoutes';
-import imagesRoute from "./routes/Gallery/imagesRoute";
-import donationRoute from "./routes/Donation/donationRoute";
-import contactRoute from "./routes/Contact/contactRoute";
-// import newsRoute from "./routes/Blog/newsRoute";
-// import optionsRoute from "./routes/Blog/optionsRoute";
-import authRoutes from "./routes/authRoutes";
-import paymentRoutes from "./routes/paymentRoutes";
-import userRoutes from "./routes/userRoutes";
-import adminRoutes from "./routes/adminRoutes";
-
-const app = express()
-
-const corsOptions = {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
-    credentials: true,
-};
-app.use(cors(corsOptions));
-app.use(cookieParser());
-
-app.use("/api/payment", paymentRoutes);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-
-//Home
-app.use("/api/home-content", homeContentRoute);
-// app.use("/kindity/home/statistics", statRoute)
-// app.use("/kindity/home/welcome", welcomeRoute)
-// app.use("/kindity/home/causes", causesRoute)
-// app.use("/kindity/home/features", featuresRoute)
-// app.use("/kindity/home/events", eventsRoute)
-// app.use("/kindity/home/testimonial", testimonialRoute)
-// app.use("/kindity/home/logo", logoRoute)
-
-//Event
-app.use('/api/events', eventsRoute);
-
-//About
-app.use('/api/about', aboutRoute);
-
-//News
-app.use('/api/news', newsRoute);
-
-//Gallery
-// app.use("/kindity/gallery", imagesRoute)
-app.use('/api/gallery', galleryRoute)
-
-//Donation
-app.use("/kindity/donation", donationRoute)
-
-//Contact
-app.use("/kindity/contact", contactRoute)
-
-//Blog
-app.use("/api/blog", blogRoute);
-
-//Auth
-app.use("/", authRoutes)
-
-// User Profile & History
-app.use('/api/users', userRoutes);
-
-// Admin Routes
-app.use("/api/admin", adminRoutes);
-
+import app from './app';
 
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect(process.env.DB_URL!)
+mongoose
+  .connect(process.env.DB_URL!)
   .then(() => {
     console.log('MongoDB Connected...');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
-  .catch(err => console.error(err));
+  .catch((err) => console.error(err));
