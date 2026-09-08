@@ -82,7 +82,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
 
   // BUG-06: amount validation gaps
   it.failing(
-    'BUG-06: rejects non-numeric amount string (https://github.com/adilmusali/kindity/issues?q=BUG-06)',
+    'BUG-06: rejects non-numeric amount string (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
         name: 'P',
@@ -98,7 +98,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
   );
 
   it.failing(
-    'BUG-06: rejects 0.001 (sub-cent) (https://github.com/adilmusali/kindity/issues?q=BUG-06)',
+    'BUG-06: rejects 0.001 (sub-cent) (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
         name: 'P',
@@ -114,7 +114,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
   );
 
   it.failing(
-    'BUG-06: rejects 10.555 (non-integer cents) (https://github.com/adilmusali/kindity/issues?q=BUG-06)',
+    'BUG-06: rejects 10.555 (non-integer cents) (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
         name: 'P',
@@ -130,7 +130,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
   );
 
   it.failing(
-    'BUG-06: rejects absurdly large amount 1e10 (https://github.com/adilmusali/kindity/issues?q=BUG-06)',
+    'BUG-06: rejects absurdly large amount 1e10 (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
         name: 'P',
@@ -226,7 +226,7 @@ describe('UNIT-PAY: handleStripeWebhook', () => {
 
   // BUG-07: DB save errors swallowed, still returns 200
   it.failing(
-    'BUG-07: returns 5xx when donation save fails (https://github.com/adilmusali/kindity/issues?q=BUG-07)',
+    'BUG-07: returns 5xx when donation save fails (https://github.com/adilmusali/kindity/issues/7)',
     async () => {
       const user = await UserModel.create({
         name: 'FailSave',

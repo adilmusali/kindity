@@ -3,7 +3,7 @@ import { seededUsers } from '../../fixtures/users';
 
 test.describe('E2E-SESSION', () => {
   test.fail(
-    'BUG-09: admin reload on /admin/dashboard should stay authenticated',
+    'BUG-09 #9: admin reload on /admin/dashboard should stay authenticated',
     async ({ page, loginPage, adminDashboardPage }) => {
       await loginPage.login(seededUsers.admin.email, seededUsers.admin.password);
       await adminDashboardPage.open();

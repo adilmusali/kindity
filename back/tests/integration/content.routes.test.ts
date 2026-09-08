@@ -3,7 +3,7 @@ import app from '../../app';
 
 describe('INT-CONTENT: missing admin write routes (BUG-03)', () => {
   it.failing(
-    'BUG-03: POST /kindity/home/events should exist for AddEvent UI (https://github.com/adilmusali/kindity/issues?q=BUG-03)',
+    'BUG-03: POST /kindity/home/events should exist for AddEvent UI (https://github.com/adilmusali/kindity/issues/3)',
     async () => {
       const res = await request(app).post('/kindity/home/events').send({
         img: 'https://example.com/e.jpg',
@@ -16,7 +16,7 @@ describe('INT-CONTENT: missing admin write routes (BUG-03)', () => {
   );
 
   it.failing(
-    'BUG-03: POST /kindity/blog/news should exist for AddNews UI (https://github.com/adilmusali/kindity/issues?q=BUG-03)',
+    'BUG-03: POST /kindity/blog/news should exist for AddNews UI (https://github.com/adilmusali/kindity/issues/3)',
     async () => {
       const res = await request(app).post('/kindity/blog/news').send({
         header: 'News',

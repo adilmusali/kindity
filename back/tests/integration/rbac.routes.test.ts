@@ -55,7 +55,7 @@ describe('INT-RBAC: protected route wiring', () => {
 
   // BUG-02: unauthenticated writes on donation/contact CMS routes
   it.failing(
-    'BUG-02: anonymous POST /kindity/donation should be 401 (https://github.com/adilmusali/kindity/issues?q=BUG-02)',
+    'BUG-02: anonymous POST /kindity/donation should be 401 (https://github.com/adilmusali/kindity/issues/2)',
     async () => {
       const res = await request(app)
         .post('/kindity/donation')
@@ -65,7 +65,7 @@ describe('INT-RBAC: protected route wiring', () => {
   );
 
   it.failing(
-    'BUG-02: anonymous DELETE /kindity/donation/:id should be 401 (https://github.com/adilmusali/kindity/issues?q=BUG-02)',
+    'BUG-02: anonymous DELETE /kindity/donation/:id should be 401 (https://github.com/adilmusali/kindity/issues/2)',
     async () => {
       const doc = await Donation.create({ header: 'H', desc: 'D' });
       const res = await request(app).delete(`/kindity/donation/${doc._id}`);
@@ -74,7 +74,7 @@ describe('INT-RBAC: protected route wiring', () => {
   );
 
   it.failing(
-    'BUG-02: anonymous PUT /kindity/contact/:id should be 401 (https://github.com/adilmusali/kindity/issues?q=BUG-02)',
+    'BUG-02: anonymous PUT /kindity/contact/:id should be 401 (https://github.com/adilmusali/kindity/issues/2)',
     async () => {
       const doc = await Contact.create({ header: 'H', desc: 'D' });
       const res = await request(app)
@@ -85,7 +85,7 @@ describe('INT-RBAC: protected route wiring', () => {
   );
 
   it.failing(
-    'BUG-02: anonymous DELETE /kindity/contact/:id should be 401 (https://github.com/adilmusali/kindity/issues?q=BUG-02)',
+    'BUG-02: anonymous DELETE /kindity/contact/:id should be 401 (https://github.com/adilmusali/kindity/issues/2)',
     async () => {
       const doc = await Contact.create({ header: 'H', desc: 'D' });
       const res = await request(app).delete(`/kindity/contact/${doc._id}`);

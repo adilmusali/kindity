@@ -1,5 +1,9 @@
 # Requirements Traceability Matrix
 
+## GitHub Issues
+
+BUG-01 … BUG-10 were filed as issues #1 … #10. See [filed-issues.json](./issues/filed-issues.json).
+
 ## API routes × roles × tests
 
 Expected status is the **secure/correct** behavior. Rows marked with BUG-xx currently misbehave; covering tests use expected-failure markers.

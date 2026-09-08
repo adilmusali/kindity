@@ -107,7 +107,7 @@ describe('UNIT-AUTH-CTRL: registerUser', () => {
 
   // BUG-01: privilege escalation via role in request body
   it.failing(
-    'BUG-01: ignores role from body and always assigns user (https://github.com/adilmusali/kindity/issues?q=BUG-01)',
+    'BUG-01: ignores role from body and always assigns user (https://github.com/adilmusali/kindity/issues/1)',
     async () => {
       const req = {
         body: {
@@ -127,7 +127,7 @@ describe('UNIT-AUTH-CTRL: registerUser', () => {
 
   // BUG-05: sameSite strict breaks cross-site Azure cookies
   it.failing(
-    'BUG-05: production cookie should use SameSite=None with Secure (https://github.com/adilmusali/kindity/issues?q=BUG-05)',
+    'BUG-05: production cookie should use SameSite=None with Secure (https://github.com/adilmusali/kindity/issues/5)',
     async () => {
       const prev = process.env.NODE_ENV;
       process.env.NODE_ENV = 'production';

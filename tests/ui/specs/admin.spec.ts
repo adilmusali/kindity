@@ -37,7 +37,7 @@ test.describe('E2E-ADMIN', () => {
     await adminDashboardPage.expectDonorEmail(seededUsers.user.email);
   });
 
-  test.fail('BUG-03: AddEvent should create an event visible on /event', async ({
+  test.fail('BUG-03 #3: AddEvent should create an event visible on /event', async ({
     page,
     loginPage,
     addEventPage,

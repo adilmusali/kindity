@@ -93,7 +93,7 @@ describe('UNIT-USER: updateUserProfile', () => {
 
   // BUG-08: unhandled async error on duplicate email
   it.failing(
-    'BUG-08: returns 400/409 when changing email to an existing one (https://github.com/adilmusali/kindity/issues?q=BUG-08)',
+    'BUG-08: returns 400/409 when changing email to an existing one (https://github.com/adilmusali/kindity/issues/8)',
     async () => {
       await UserModel.create({
         name: 'Taken',

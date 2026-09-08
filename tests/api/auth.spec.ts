@@ -86,7 +86,7 @@ test.describe('API-AUTH', () => {
   });
 
   test.fail(
-    'BUG-01: register with role=admin must not escalate privileges',
+    'BUG-01 #1: register with role=admin must not escalate privileges',
     async ({ asAnon }) => {
       const email = uniqueEmail('escalate');
       const res = await asAnon.post('/register', {
