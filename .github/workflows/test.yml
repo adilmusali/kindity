@@ -1,0 +1,125 @@
+name: Test Suite
+
+on:
+  workflow_call:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  backend-tests:
+    name: Backend unit and integration
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./back
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+          cache-dependency-path: back/package-lock.json
+
+      - name: Cache mongodb-memory-server binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mongodb-binaries
+          key: ${{ runner.os }}-mms-${{ hashFiles('back/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Jest with coverage
+        run: npm run test:ci
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: back/coverage
+          if-no-files-found: ignore
+
+  e2e:
+    name: Playwright API and UI
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      CI: true
+      API_URL: http://localhost:3000
+      FRONT_URL: http://localhost:5173
+      DB_URL: mongodb://127.0.0.1:27017/kindity_test
+      JWT_SECRET: test-jwt-secret-kindity-qa
+      CLIENT_URL: http://localhost:5173
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+      VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+      SEED_ADMIN_EMAIL: admin@kindity.test
+      SEED_ADMIN_PASSWORD: admin123
+      SEED_USER_EMAIL: user@kindity.test
+      SEED_USER_PASSWORD: user123
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply Stripe env defaults for unsigned/local-mode runs
+        run: |
+          if [ -z "$STRIPE_SECRET_KEY" ]; then echo "STRIPE_SECRET_KEY=sk_test_dummy" >> $GITHUB_ENV; fi
+          if [ -z "$STRIPE_WEBHOOK_SECRET" ]; then echo "STRIPE_WEBHOOK_SECRET=whsec_test" >> $GITHUB_ENV; fi
+          if [ -z "$VITE_STRIPE_PUBLISHABLE_KEY" ]; then echo "VITE_STRIPE_PUBLISHABLE_KEY=pk_test_dummy" >> $GITHUB_ENV; fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+          cache-dependency-path: |
+            back/package-lock.json
+            front/package-lock.json
+            tests/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: ./back
+        run: npm ci
+
+      - name: Install frontend dependencies
+        working-directory: ./front
+        run: npm ci
+
+      - name: Install Playwright dependencies
+        working-directory: ./tests
+        run: npm ci
+
+      - name: Install Playwright browser
+        working-directory: ./tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        working-directory: ./tests
+        run: npx playwright test
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/playwright-report
+          if-no-files-found: ignore
+
+      - name: Upload Playwright traces and videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results
+          path: tests/test-results
+          if-no-files-found: ignore
