@@ -8,6 +8,7 @@ interface ICauses extends Document {
   need: number;
   createdAt: Date;
   updatedAt: Date;
+  isDemo?: boolean;
 }
 
 const causesSchema: Schema = new Schema<ICauses>({
@@ -30,7 +31,8 @@ const causesSchema: Schema = new Schema<ICauses>({
   need: {
     type: Number,
     required: true
-  }
+  },
+  isDemo: { type: Boolean, required: false }
 }, { timestamps: true });
 
 export const CausesModel = model<ICauses>('causes', causesSchema);

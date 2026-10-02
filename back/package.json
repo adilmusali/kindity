@@ -10,7 +10,8 @@
     "start:test": "ts-node ./server.ts",
     "test": "jest --runInBand",
     "test:ci": "jest --runInBand --coverage --forceExit",
-    "seed": "ts-node ./scripts/seed.ts"
+    "seed": "ts-node ./scripts/seed.ts",
+    "migrate:demo-content": "ts-node ./scripts/migrateDemoContent.ts"
   },
   "keywords": [],
   "author": "",

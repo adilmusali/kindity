@@ -17,7 +17,8 @@
           "_id": { "type": "string" },
           "header": { "type": "string" },
           "desc": { "type": "string" },
-          "img": { "type": "string" }
+          "img": { "type": "string" },
+          "isDemo": { "type": "boolean" }
         }
       }
     }

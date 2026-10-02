@@ -3,12 +3,12 @@
   "required": ["statistics", "welcome", "causes", "features", "events", "testimonial", "logo"],
   "additionalProperties": false,
   "properties": {
-    "statistics": { "type": "array" },
-    "welcome": { "type": "array" },
-    "causes": { "type": "array" },
+    "statistics": { "type": "array", "items": { "type": "object", "properties": { "isDemo": { "type": "boolean" } } } },
+    "welcome": { "type": "array", "items": { "type": "object", "properties": { "isDemo": { "type": "boolean" } } } },
+    "causes": { "type": "array", "items": { "type": "object", "properties": { "isDemo": { "type": "boolean" } } } },
     "features": { "type": "array" },
-    "events": { "type": "array" },
-    "testimonial": { "type": "array" },
+    "events": { "type": "array", "items": { "$ref": "event.json" } },
+    "testimonial": { "type": "array", "items": { "type": "object", "properties": { "isDemo": { "type": "boolean" } } } },
     "logo": { "type": "array" }
   }
 }

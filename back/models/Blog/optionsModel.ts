@@ -6,6 +6,7 @@ export interface IOption extends Document {
     img: string;
     createdAt?: Date;
     updatedAt?: Date;
+    isDemo?: boolean;
 }
 
 const optionsSchema: Schema<IOption> = new Schema(
@@ -22,6 +23,7 @@ const optionsSchema: Schema<IOption> = new Schema(
             type: String,
             required: true,
         },
+        isDemo: { type: Boolean, required: false },
     },
     { timestamps: true }
 );

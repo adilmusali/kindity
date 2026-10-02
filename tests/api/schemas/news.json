@@ -12,6 +12,7 @@
     "category3": { "type": "string" },
     "category4": { "type": "string" },
     "user": { "type": "string" },
+    "isDemo": { "type": "boolean" },
     "createdAt": { "type": "string" },
     "updatedAt": { "type": "string" },
     "__v": { "type": "number" }

@@ -15,6 +15,7 @@ import { Testimonial } from '../models/Home/testimonialModel';
 import Logo from '../models/Home/logoModel';
 import Donation from '../models/Donation/donationModel';
 import Contact from '../models/Contact/contactModel';
+import { demoContent } from './data/demoContent';
 
 const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@kindity.test';
 const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'admin123';
@@ -76,18 +77,7 @@ async function seed() {
     'events',
     () => EventsModel.countDocuments(),
     async () => {
-      await EventsModel.create([
-        {
-          img: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600',
-          header: 'Community Food Drive',
-          desc: 'Help us pack and deliver meals to families in need this weekend.',
-        },
-        {
-          img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600',
-          header: 'School Supply Day',
-          desc: 'Donate backpacks and stationery for local students.',
-        },
-      ]);
+      await EventsModel.create(demoContent.events);
     }
   );
 
@@ -95,16 +85,7 @@ async function seed() {
     'news',
     () => News.countDocuments(),
     async () => {
-      await News.create({
-        header: 'Kindity Opens New Shelter Wing',
-        desc: 'Our volunteers celebrated the opening of a new wing serving 40 families.',
-        img: 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=600',
-        category1: 'Shelter',
-        category2: 'Community',
-        category3: 'News',
-        category4: 'Impact',
-        user: 'Seed Admin',
-      });
+      await News.create(demoContent.news);
     }
   );
 
@@ -112,11 +93,7 @@ async function seed() {
     'blog options',
     () => Options.countDocuments(),
     async () => {
-      await Options.create({
-        header: 'How to Volunteer',
-        desc: 'Sign up for weekly shifts and join our orientation session.',
-        img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600',
-      });
+      await Options.create(demoContent.options);
     }
   );
 
@@ -135,10 +112,7 @@ async function seed() {
     'statistics',
     () => StatModel.countDocuments(),
     async () => {
-      await StatModel.create([
-        { header: 'Donations', desc: 'Raised this year', number: '120K', color: '#ea2c58' },
-        { header: 'Volunteers', desc: 'Active helpers', number: '850', color: '#2c98ea' },
-      ]);
+      await StatModel.create(demoContent.statistics);
     }
   );
 
@@ -146,14 +120,7 @@ async function seed() {
     'welcome',
     () => WelcomeModel.countDocuments(),
     async () => {
-      await WelcomeModel.create({
-        header: 'Welcome to Kindity',
-        desc: 'Together we build stronger communities through kindness.',
-        donation: 120000,
-        projects: 48,
-        volunteers: 850,
-        img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800',
-      });
+      await WelcomeModel.create(demoContent.welcome);
     }
   );
 
@@ -161,13 +128,7 @@ async function seed() {
     'causes',
     () => CausesModel.countDocuments(),
     async () => {
-      await CausesModel.create({
-        img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600',
-        header: 'Clean Water',
-        desc: 'Fund wells and filtration for rural communities.',
-        raised: 4200,
-        need: 10000,
-      });
+      await CausesModel.create(demoContent.causes);
     }
   );
 
@@ -187,12 +148,7 @@ async function seed() {
     'testimonials',
     () => Testimonial.countDocuments(),
     async () => {
-      await Testimonial.create({
-        img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200',
-        desc: 'Kindity made it easy to support causes I care about.',
-        name: 'Jordan Lee',
-        job: 'Donor',
-      });
+      await Testimonial.create(demoContent.testimonial);
     }
   );
 
