@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { UserContext } from "../../../context/userContext";
+import { formatEventDate } from "../../utils/contentFormatters";
+import DemoLabel from "../DemoLabel";
 
 const TopicEvents = () => {
   const [data, setData] = useState([]);
@@ -75,12 +77,7 @@ const TopicEvents = () => {
                     />
                     <div className="flex flex-col gap-3">
                       <div className="flex justify-between items-center gap-2">
-                      <a
-                        href="#"
-                        className="text-[12px] lg:text-[10px] xl:text-[12px] text-[#777777] hover:text-[#ea2c58] transition duration-500 font-light"
-                      >
-                        25th February, 2017
-                      </a>
+                      <span className="text-[12px] lg:text-[10px] xl:text-[12px] text-[#777777] font-light">{formatEventDate(d.eventDate)}</span>
                       {user && user.role === 'admin' && (
                         <button onClick={() => deleteData(d._id)} className="text-[16px] lg:text-[14px] xl:text-[16px] bg-red-500 text-white hover:bg-red-600 duration-300 px-3">Delete</button>
                       )}
@@ -93,6 +90,7 @@ const TopicEvents = () => {
                       <p className="text-[14px] text-[#777777] font-light leading-6">
                         {d.desc}
                       </p>
+                      {d.isDemo === true && <DemoLabel />}
                     </div>
                   </div>
                 );

@@ -2,6 +2,8 @@ import React from "react";
 import { BsDatabase } from "react-icons/bs";
 import { RiBook3Line } from "react-icons/ri";
 import { FiUsers } from "react-icons/fi";
+import DemoLabel from "../DemoLabel";
+import { formatUSD } from "../../utils/contentFormatters";
 
 const Welcome = ({ data }) => {
   return (
@@ -18,11 +20,12 @@ const Welcome = ({ data }) => {
                 <p className="text-[14px] text-slate-500 font-light leading-relaxed mt-[20px] mb-[45px] mr-[70px]">
                   {d.desc}
                 </p>
-                <div className="flex gap-[30px] flex-wrap sm:flex-nowrap">
+                {typeof d.isDemo === "boolean" && <div className="flex gap-[30px] flex-wrap sm:flex-nowrap">
+                  {d.isDemo === true && <div className="w-full"><DemoLabel kind="figures" /></div>}
                   <div className="border px-[25px] md:pl-[25px] md:pr-[80px] lg:px-[25px] w-full sm:w-none py-[30px]">
                     <BsDatabase className="text-[#ea2c58] text-[24px]" />
                     <h4 className="text-[24px] font-semibold mt-[15px] mb-[5px]">
-                      ${d.donation}M
+                      {formatUSD(d.donation) ?? "Not provided"}
                     </h4>
                     <span className="text-[14px] text-slate-500 font-light">
                       Total Donation
@@ -46,7 +49,7 @@ const Welcome = ({ data }) => {
                       Total Volunteers
                     </span>
                   </div>
-                </div>
+                </div>}
               </div>
               <div className="lg:bg-gray-100 w-[500px] lg:w-[1500px] xl:w-[1600px] h-[280px] xl:h-[360px] relative">
                 <div className="md:w-[450px] lg:w-[350px] xl:w-[450px] absolute left-7 -top-[30px]">

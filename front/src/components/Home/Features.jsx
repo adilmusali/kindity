@@ -2,20 +2,14 @@ import React from "react";
 import { IoDiamondOutline } from "react-icons/io5";
 import { CiCoffeeCup } from "react-icons/ci";
 import { TfiWheelchair } from "react-icons/tfi";
+import DemoLabel from "../DemoLabel";
 
-const Features = ({ data }) => {
-  const getIconComponent = (iconName) => {
-    switch (iconName) {
-      case "IoDiamondOutline":
-        return <IoDiamondOutline className="text-[25px] mx-auto text-white" />;
-      case "CiCoffeeCup":
-        return <CiCoffeeCup className="text-[25px] mx-auto text-white" />;
-      case "TfiWheelchair":
-        return <TfiWheelchair className="text-[25px] mx-auto text-white" />;
-      default:
-        return null;
-    }
-  };
+const Features = () => {
+  const examples = [
+    { icon: <IoDiamondOutline className="text-[25px] mx-auto text-white" />, title: "Food support", description: "Explore example ways neighbors can share food and household essentials." },
+    { icon: <CiCoffeeCup className="text-[25px] mx-auto text-white" />, title: "Learning together", description: "Consider illustrative activities for sharing learning materials and skills." },
+    { icon: <TfiWheelchair className="text-[25px] mx-auto text-white" />, title: "Community volunteering", description: "Discover sample ideas for offering time and care in a community." },
+  ];
   return (
     <section>
       <div
@@ -26,32 +20,29 @@ const Features = ({ data }) => {
           <div className="py-[120px]">
             <div className="text-center mb-[80px]">
               <h2 className="text-[25px] sm:text-[36px] text-white font-semibold mb-[20px]">
-                Our Key Features
+                Ways to support a community
               </h2>
               <p className="text-[14px] text-[#777777] font-light leading-6">
-                The French Revolution constituted for the conscience of the
-                dominant aristocratic class a fall from innocence, and upturning
-                of the natural chain of events that resounded.
+                These are illustrative ideas. Programs and services have not been verified.
               </p>
+              <DemoLabel className="mt-3" />
             </div>
             <div className="flex gap-[50px] lg:gap-0 justify-center lg:justify-between text-center flex-wrap lg:flex-nowrap">
-            {data && data.map((d) => {
-                return(
+            {examples.map((example) => (
                     <div
-                    key={d._id}
+                    key={example.title}
                 id="glass2"
                 className="w-[80%] md:w-[60%] lg:w-[31%] flex flex-col gap-[20px] px-[34px] py-[45px]"
               >
-                {getIconComponent(d.logo)}
+                {example.icon}
                 <h4 className="uppercase font-semibold text-[18px] text-white">
-                  {d.header}
+                  {example.title}
                 </h4>
                 <p className="font-light text-[14px] text-[#777777] leading-6">
-                  {d.desc}
+                  {example.description}
                 </p>
               </div>
-                )
-            })}
+            ))}
             </div>
           </div>
         </div>
