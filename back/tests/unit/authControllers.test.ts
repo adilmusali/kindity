@@ -105,8 +105,7 @@ describe('UNIT-AUTH-CTRL: registerUser', () => {
     process.env.NODE_ENV = prev;
   });
 
-  // BUG-01: privilege escalation via role in request body
-  it.failing(
+  it(
     'BUG-01: ignores role from body and always assigns user (https://github.com/adilmusali/kindity/issues/1)',
     async () => {
       const req = {
