@@ -22,7 +22,7 @@ export const Login = () => {
 
   const handleLogin = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/login", data);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, data);
 
       if (response.data.error) {
         toast.error(response.data.error);

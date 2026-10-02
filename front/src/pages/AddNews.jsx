@@ -16,7 +16,7 @@ const AddEvent = () => {
 
   const postData = async () => {
     const values = getValues();
-    axios.post("http://localhost:3000/kindity/blog/news", {
+    axios.post(`${import.meta.env.VITE_API_URL}/kindity/blog/news`, {
       header: values.header,
       desc: values.desc,
       img: values.img,
