@@ -7,6 +7,8 @@
     "img": { "type": "string" },
     "header": { "type": "string" },
     "desc": { "type": "string" },
+    "isDemo": { "type": "boolean" },
+    "eventDate": { "type": "string", "format": "date", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
     "createdAt": { "type": "string" },
     "updatedAt": { "type": "string" },
     "__v": { "type": "number" }

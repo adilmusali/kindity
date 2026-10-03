@@ -9,6 +9,7 @@ interface IWelcome extends Document {
     img: string;
     createdAt: Date;
     updatedAt: Date;
+    isDemo?: boolean;
 }
 
 const welcomeSchema: Schema = new Schema <IWelcome>({
@@ -35,7 +36,8 @@ const welcomeSchema: Schema = new Schema <IWelcome>({
     img: {
         type: String,
         required: true
-    }
+    },
+    isDemo: { type: Boolean, required: false }
 }, { timestamps: true });
 
 export const WelcomeModel = model<IWelcome>('welcome', welcomeSchema);

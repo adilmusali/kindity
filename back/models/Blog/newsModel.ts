@@ -11,6 +11,7 @@ export interface INews extends Document {
     user: string;
     createdAt?: Date;
     updatedAt?: Date;
+    isDemo?: boolean;
 }
 
 const newsSchema: Schema = new Schema(
@@ -22,7 +23,8 @@ const newsSchema: Schema = new Schema(
         category2: { type: String, required: true },
         category3: { type: String, required: true },
         category4: { type: String, required: true },
-        user: { type: String, required: true }
+        user: { type: String, required: true },
+        isDemo: { type: Boolean, required: false }
     },
     { timestamps: true }
 );

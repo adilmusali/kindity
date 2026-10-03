@@ -7,6 +7,7 @@ interface IStat extends Document {
   color: string;
   createdAt: Date;
   updatedAt: Date;
+  isDemo?: boolean;
 }
 
 const statSchema: Schema = new Schema<IStat>({
@@ -25,7 +26,8 @@ const statSchema: Schema = new Schema<IStat>({
   color: {
     type: String,
     required: true
-  }
+  },
+  isDemo: { type: Boolean, required: false }
 }, { timestamps: true });
 
 export const StatModel = model<IStat>('statistics', statSchema);

@@ -2,7 +2,10 @@ import { RequestHandler } from 'express';
 import Stripe from 'stripe';
 import DonationHistoryModel from '../models/donationHistoryModel';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const getStripe = () => {
+  const apiKey = process.env.STRIPE_SECRET_KEY?.trim();
+  return apiKey ? new Stripe(apiKey) : null;
+};
 
 export const createPaymentIntent: RequestHandler = async (req, res) => {
   console.log('--- 1. /create-payment-intent endpoint hit ---');
@@ -19,6 +22,12 @@ export const createPaymentIntent: RequestHandler = async (req, res) => {
   if (!amount || amount <= 0) {
     console.error(`--- ERROR: Invalid amount received: ${amount} ---`);
     res.status(400).json({ error: 'A valid amount is required.' });
+    return;
+  }
+
+  const stripe = getStripe();
+  if (!stripe) {
+    res.status(503).json({ error: 'Stripe payments are not configured.' });
     return;
   }
   
@@ -46,11 +55,18 @@ export const createPaymentIntent: RequestHandler = async (req, res) => {
 };
 
 export const handleStripeWebhook: RequestHandler = async (req, res) => {
+  const stripe = getStripe();
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
+  if (!stripe || !webhookSecret) {
+    res.status(503).json({ error: 'Stripe payments are not configured.' });
+    return;
+  }
+
   const sig = req.headers['stripe-signature'] as string;
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
   } catch (err: any) {
     console.error('Webhook signature verification failed.', err.message);
     res.status(400).send(`Webhook Error: ${err.message}`);

@@ -1,139 +1,50 @@
-import React, { useContext, useState } from "react";
-import {
-  FaRegUser,
-  FaRegComment,
-} from "react-icons/fa";
-import { LuCalendarDays } from "react-icons/lu";
-import { AiOutlineEye } from "react-icons/ai";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Pagination from "@mui/material/Pagination";
 import axios from "axios";
 import BlogInfo from "../BlogInfo";
+import StoryBody from "./StoryBody";
+import StoryMeta from "./StoryMeta";
 import { UserContext } from "../../../context/userContext";
 
 const MainBlog = ({ data }) => {
   const { user } = useContext(UserContext);
-  const [posts, setPosts] = useState(data);
+  const [posts, setPosts] = useState(data ?? []);
 
-  const deleteData = async (id) => {
-    await axios.delete(`${import.meta.env.VITE_API_URL}/api/news/${id}`)
-    setPosts(currentPosts => currentPosts.filter(p => p._id !== id));
-  }
+  useEffect(() => setPosts(data ?? []), [data]);
+
+  const deleteStory = async (id) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/news/${id}`);
+      setPosts((current) => current.filter((post) => post._id !== id));
+    } catch (error) {
+      console.error("Failed to delete story", error);
+    }
+  };
 
   return (
     <section className="bg-[#f9f9ff]">
       <div className="container">
-        <div className="flex justify-between flex-wrap lg:flex-nowrap gap-[30px] xl:gap-0 pb-[95px]">
-          <div className="flex">
-            <div className="flex flex-col gap-[40px]">
-              {posts && posts.map((d) => {
-                return(
-                  <div className="flex flex-wrap md:flex-nowrap" key={d._id}>
-                <div className="text-[14px] font-light md:px-[30px] pt-[30px]">
-                  <div className="mb-[20px] flex md:flex-col leading-6">
-                    <div className="flex gap-1 justify-end">
-                      <a href="#" className="hover:text-[#777777] duration-300">
-                        {d.category1},{" "}
-                      </a>
-                      <a href="#" className="text-[#ea2c58]">
-                        {d.category2},
-                      </a>
-                    </div>
-                    <div className="flex gap-1 justify-end">
-                      <a href="#" className="hover:text-[#777777] duration-300">
-                        {d.category3},{" "}
-                      </a>
-                      <a href="#" className="hover:text-[#777777] duration-300">
-                        {d.category4}
-                      </a>
-                    </div>
-                  </div>
-                  <ul>
-                    <a href="#">
-                      <li className="flex items-center mb-[15px] md:justify-end">
-                        <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777]">
-                          {d.user}
-                        </span>
-                        <FaRegUser className="text-[16px]" />
-                      </li>
-                    </a>
-                    <a href="#">
-                      <li className="flex items-center mb-[15px] md:justify-end">
-                        <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777]">
-                          {d.createdAt.slice(8,10)} June, {d.createdAt.slice(0,4)}
-                        </span>
-                        <LuCalendarDays className="text-[16px]" />
-                      </li>
-                    </a>
-                    <a href="#">
-                      <li className="flex items-center mb-[15px] md:justify-end">
-                        <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777]">
-                          1.2M Views
-                        </span>
-                        <AiOutlineEye className="text-[16px]" />
-                      </li>
-                    </a>
-                    <a href="#">
-                      <li className="flex items-center mb-[15px] md:justify-end">
-                        <span className="hover:text-[#ea2c58] duration-300 pr-[15px] text-[#777777] text-[13px] xl:text-[14px]">
-                          06 Comments
-                        </span>
-                        <FaRegComment className="text-[16px]" />
-                      </li>
-                    </a>
-                  </ul>
-                </div>
-                <div className="flex flex-col lg:w-[450px] xl:w-[585px]">
-                  <div>
-                    <img
-                      className="w-full"
-                      src={d.img}
-                      alt=""
-                    />
-                  </div>
-                  <div className="py-[20px]">
-                    <Link>
-                      <h3 className="text-[20px] sm:text-[24px] font-semibold mb-[10px] hover:text-[#ea2c58] duration-[0.4s]">
-                        {d.header}
-                      </h3>
-                    </Link>
-                    <p className="text-[14px] font-light text-[#777777] leading-6">
-                      {d.desc}
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex justify-center gap-4 sm:gap-0 sm:justify-between flex-wrap">
-                    <Link to={`${d._id}`}>
-                    <button
-                      className="text-[14px] uppercase bg-white text-black px-[30px] py-2 font-medium
-                hover:bg-[#ea2c58] hover:text-white duration-500"
-                    >
-                      view more
-                    </button>
-                    </Link>
-                    {user && user.role === 'admin' && (
-                      <div className="flex gap-2">
-                        <Link to={"/addNews"} className="rounded-[50%] bg-lime-500 px-3 py-1 text-[20px] 
-                        text-white hover:bg-lime-600 duration-300">+</Link>
-                      <button
-                        onClick={() => deleteData(d._id)}
-                        className="text-[14px] uppercase bg-[#ea2c58] text-white px-[30px] py-2 font-medium
-                  hover:bg-white hover:text-black duration-500"
-                      >
-                        Delete
-                      </button>
-                      </div>
+        <div className="flex flex-wrap lg:flex-nowrap gap-10 py-20">
+          <div className="flex-1 min-w-0 space-y-12">
+            {posts.length === 0 && <p className="text-[#777777]">No stories are available yet.</p>}
+            {posts.map((story) => (
+              <article className="bg-white" key={story._id}>
+                {story.img && <img className="w-full max-h-[400px] object-cover" src={story.img} alt="" />}
+                <div className="p-6 sm:p-8 space-y-5">
+                  <h2 className="text-xl sm:text-2xl font-semibold">
+                    <Link to={`/blog/${story._id}`} className="hover:text-[#ea2c58]">{story.header}</Link>
+                  </h2>
+                  <StoryMeta story={story} />
+                  <StoryBody description={story.desc} />
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Link to={`/blog/${story._id}`} className="inline-block bg-[#ea2c58] text-white text-sm font-medium px-6 py-2 hover:bg-[#b91d45]">Read story</Link>
+                    {user?.role === "admin" && (
+                      <button type="button" onClick={() => deleteStory(story._id)} className="text-sm border px-5 py-2 hover:border-[#ea2c58]">Delete</button>
                     )}
-                    </div>
                   </div>
                 </div>
-              </div>
-                )
-              })}
-              <div className="mx-auto mt-[30px] mb-[95px] lg:mb-0">
-                <Pagination count={10} color="error" className="flex flex-wrap"/>
-              </div>
-            </div>
+              </article>
+            ))}
           </div>
           <BlogInfo />
         </div>

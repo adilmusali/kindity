@@ -13,6 +13,7 @@ function loadSchema(name: string) {
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
 ajv.addSchema(loadSchema('news.json'), 'news.json');
+ajv.addSchema(loadSchema('event.json'), 'event.json');
 
 function validate(schemaName: string, data: unknown) {
   const schema = loadSchema(schemaName);

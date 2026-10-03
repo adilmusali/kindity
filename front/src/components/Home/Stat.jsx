@@ -1,4 +1,5 @@
 import React from "react";
+import DemoLabel from "../DemoLabel";
 
 const Stat = ({ data }) => {
   const getBackgroundColor = (color) => {
@@ -8,7 +9,7 @@ const Stat = ({ data }) => {
   return (
     <div className="flex flex-wrap lg:flex-nowrap gap-[30px] sm:w-[500px] lg:w-none mx-auto lg:mx-0 
     justify-center lg:justify-between text-white py-[50px] md:py-0 md:relative md:-top-[80px]">
-      {data && data.map((d) => {
+      {data && data.filter((d) => typeof d.isDemo === "boolean").map((d) => {
         return (
           <div key={d._id} className="flex gap-[30px] lg:gap-3 xl:gap-0 items-center p-[30px]" style={getBackgroundColor(d.color)}>
             <div className="flex flex-col gap-4 xl:border-r xl:border-white xl:pr-[25px] xl:mr-[25px]">
@@ -21,6 +22,7 @@ const Stat = ({ data }) => {
           </div>
         );
       })}
+      {data?.some((d) => d.isDemo === true) && <div className="w-full"><DemoLabel kind="figures" /></div>}
     </div>
   );
 };

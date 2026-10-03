@@ -7,6 +7,7 @@ interface ITestimonial extends Document {
     job: string;
     createdAt?: Date;
     updatedAt?: Date;
+    isDemo?: boolean;
 }
 
 const testSchema: Schema = new Schema<ITestimonial>(
@@ -27,6 +28,7 @@ const testSchema: Schema = new Schema<ITestimonial>(
             type: String,
             required: true,
         },
+        isDemo: { type: Boolean, required: false },
     },
     { timestamps: true }
 );

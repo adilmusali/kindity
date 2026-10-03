@@ -26,9 +26,11 @@ const About = () => {
     fetchAboutData();
   }, []);
 
-  if (loading || !aboutData) {
+  if (loading) {
     return <div className='text-center py-40'>Loading...</div>
   }
+
+  if (!aboutData) return <div className='text-center py-40'>About content is unavailable right now.</div>;
 
   return (
     <>
