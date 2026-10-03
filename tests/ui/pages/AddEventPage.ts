@@ -7,7 +7,8 @@ export class AddEventPage extends BasePage {
   }
 
   async open() {
-    await this.goto('/addEvent');
+    await this.page.locator('#header').getByRole('link', { name: 'Events', exact: true }).click();
+    await this.page.locator('a[href="/addEvent"]').click();
   }
 
   async submitEvent(img: string, header: string, desc: string) {

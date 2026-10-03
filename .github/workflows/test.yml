@@ -1,9 +1,18 @@
 name: Test Suite
 
 on:
-  workflow_call:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   backend-tests:
@@ -29,6 +38,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Build backend
+        run: npm run build
 
       - name: Run Jest with coverage
         run: npm run test:ci
@@ -97,6 +109,14 @@ jobs:
       - name: Install Playwright dependencies
         working-directory: ./tests
         run: npm ci
+
+      - name: Build frontend
+        working-directory: ./front
+        run: npm run build
+
+      - name: Check Playwright types
+        working-directory: ./tests
+        run: npx tsc --noEmit
 
       - name: Install Playwright browser
         working-directory: ./tests

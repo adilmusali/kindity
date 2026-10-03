@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Provide automated and exploratory coverage for Kindity’s donation platform so regressions in authentication, authorization, payments, and content APIs are caught before Azure deploy.
+Provide automated and exploratory coverage for Kindity’s donation platform so regressions in authentication, authorization, payments, and content APIs are caught before release.
 
 ## 2. Scope
 
@@ -12,7 +12,7 @@ Provide automated and exploratory coverage for Kindity’s donation platform so 
 - Backend integration tests (Express routes + Mongo)
 - Playwright API tests (auth, RBAC matrix, payments, JSON contracts)
 - Playwright UI E2E (register/login/donate/admin/session)
-- CI gating of Azure API and Static Web Apps deploys
+- CI builds and tests on pushes to main, pull requests targeting main, and manual runs
 - Defect documentation for known bugs BUG-01 … BUG-10
 
 ### Out of scope
@@ -50,7 +50,7 @@ Provide automated and exploratory coverage for Kindity’s donation platform so 
 
 - All Jest suites green (including `it.failing` known bugs)
 - All Playwright suites green (including `test.fail` known bugs)
-- Deploy workflows only proceed after the reusable test workflow succeeds
+- Backend and frontend builds and the test workflow pass before release
 - BUG-01…10 filed (or markdown ready) with severity and reproduction
 
 ## 7. Known-bug policy
@@ -62,9 +62,9 @@ Bug-revealing assertions use expected-failure markers linked to `BUG-0X`. An une
 | Risk | Mitigation |
 |------|------------|
 | No Stripe secrets in CI | Payment create-intent / card E2E skip; webhook uses self-signed events |
-| Hardcoded `localhost:3000` in some UI pages | Local E2E still works; BUG-04 documents Azure breakage |
+| Missing frontend API URL | Set `VITE_API_URL` when building the frontend; BUG-04 documents the original hardcoded URL defect |
 | Docker Desktop unavailable on some workstations | Jest still runs; Playwright documented as needing Mongo |
-| `sameSite: strict` vs split Azure domains | BUG-05; local same-site localhost ports still send cookies |
+| `sameSite: strict` with frontend and API on different sites | BUG-05; local same-site localhost ports still send cookies |
 
 ## 9. Defect workflow
 

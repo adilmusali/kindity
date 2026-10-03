@@ -12,7 +12,7 @@ const FirstHeader = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:3000/logout");
+      await axios.post(`${import.meta.env.VITE_API_URL}/logout`);
       toast.success("Logged out successfully");
       setUser(null);
       navigate("/");

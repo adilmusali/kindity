@@ -1,5 +1,9 @@
 # Kindity QA Guide
 
+## Continuous integration
+
+The GitHub Actions `Test Suite` workflow builds the backend and frontend and runs Jest and Playwright. It runs on pushes to `main`, pull requests targeting `main`, and manual dispatches. Coverage, browser reports, and failure traces are uploaded as artifacts. CI uses a MongoDB service and requires no hosting subscription.
+
 ## Quick start
 
 ### Backend unit and integration tests

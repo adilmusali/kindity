@@ -16,7 +16,7 @@ const createToken = (userId: string, email: string, role: string): string => {
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
     if (!name) {
       res.status(400).json({ error: 'Name is required'});
@@ -43,7 +43,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       name,
       email,
       password: hashedPassword,
-      role: role || 'user',
+      role: 'user',
     });
     await newUser.save();
 

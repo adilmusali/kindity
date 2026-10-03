@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchAllDonations = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3000/api/admin/donations");
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/donations`);
         setAllDonations(data);
       } catch (error) {
         console.error("Failed to fetch all donations", error);

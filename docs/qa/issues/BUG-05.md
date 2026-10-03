@@ -1,13 +1,13 @@
-# BUG-05: Auth cookie `sameSite: 'strict'` blocks cross-site Azure domains
+# BUG-05: Auth cookie `sameSite: 'strict'` blocks cross-site sessions
 
 **Severity:** High  
 **Component:** `back/controllers/authControllers.ts`  
-**Environment:** Production (frontend and API on different Azure hostnames)  
+**Environment:** Production (frontend and API on different sites)\
 **Labels:** `bug`, `severity:high`, `area:auth`
 
 ## Steps to reproduce
 
-1. Host SPA and API on different sites (e.g. `*.azurestaticapps.net` vs `*.azurewebsites.net`).
+1. Host the frontend and API on different sites (e.g. `app.example.org` and `api.example.net`).
 2. Log in successfully (API sets `Set-Cookie`).
 3. SPA calls `/profile` or `/api/users/donations` with `credentials: 'include'`.
 

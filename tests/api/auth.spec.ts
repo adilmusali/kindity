@@ -85,7 +85,7 @@ test.describe('API-AUTH', () => {
     expect(profile.status()).toBe(401);
   });
 
-  test.fail(
+  test(
     'BUG-01 #1: register with role=admin must not escalate privileges',
     async ({ asAnon }) => {
       const email = uniqueEmail('escalate');
@@ -106,9 +106,7 @@ test.describe('API-AUTH', () => {
       });
       expect(login.status()).toBe(200);
       const admin = await asAnon.get('/api/admin/donations');
-      // After fix, even if somehow logged in, role should be user -> 403
-      // Current bug: role admin -> 200
-      expect([401, 403]).toContain(admin.status());
+      expect(admin.status()).toBe(403);
     }
   );
 });

@@ -16,7 +16,18 @@ test.describe('E2E-LOGIN-ERRORS', () => {
         await route.continue();
       });
 
-      await loginPage.login('anyone@kindity.test', 'abcdef');
+      await loginPage.open();
+      await loginPage.fillCredentials('anyone@kindity.test', 'abcdef');
+      await Promise.all([
+        page.waitForResponse((response) =>
+          new URL(response.url()).pathname === '/login' &&
+          response.request().method() === 'POST'
+        ),
+        loginPage.submit(),
+      ]);
+      await expect(
+        page.getByText(/invalid credentials|unexpected error|try again|server error/i)
+      ).toBeVisible();
       await expect(page.getByText('Invalid credentials. Please try again.')).toHaveCount(0);
       await expect(
         page.getByText(/unexpected error|try again|server error/i)

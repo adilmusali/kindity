@@ -16,12 +16,13 @@ export class LoginPage extends BasePage {
   }
 
   async submit() {
-    await this.page.getByRole('button', { name: /Login|Logging in/i }).click();
+    await this.page.locator('form').getByRole('button', { name: /Login|Logging in/i }).click();
   }
 
   async login(email: string, password: string) {
     await this.open();
     await this.fillCredentials(email, password);
     await this.submit();
+    await this.page.waitForURL((url) => url.pathname === '/');
   }
 }
