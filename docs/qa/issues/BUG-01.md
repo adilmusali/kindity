@@ -2,7 +2,7 @@
 
 **Severity:** Critical  
 **Component:** `back/controllers/authControllers.ts` (`registerUser`)  
-**Environment:** All (local, Azure)  
+**Environment:** Local and hosted environments\
 **Labels:** `bug`, `severity:critical`, `area:auth`
 
 ## Steps to reproduce

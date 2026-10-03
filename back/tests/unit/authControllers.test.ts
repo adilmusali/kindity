@@ -124,7 +124,7 @@ describe('UNIT-AUTH-CTRL: registerUser', () => {
     }
   );
 
-  // BUG-05: sameSite strict breaks cross-site Azure cookies
+  // BUG-05: sameSite strict breaks cross-site session cookies
   it.failing(
     'BUG-05: production cookie should use SameSite=None with Secure (https://github.com/adilmusali/kindity/issues/5)',
     async () => {
