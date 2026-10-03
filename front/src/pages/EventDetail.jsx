@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { VscCalendar } from "react-icons/vsc";
 import DetailRouting from '../components/Event/DetailRouting';
 import { Helmet } from 'react-helmet';
@@ -10,16 +10,22 @@ import DemoLabel from '../components/DemoLabel';
 
 const EventDetail = () => {
     const [data, setData] = useState(null);
+    const [error, setError] = useState(false);
     const params = useParams();
   
     useEffect(() => {
-      const getData = async () => {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/events/${params.id}`);
-        setData(res.data);
-      }
-
-      getData();
+      let active = true;
+      setData(null);
+      setError(false);
+      axios.get(`${import.meta.env.VITE_API_URL}/api/events/${params.id}`)
+        .then(({ data: event }) => { if (active) setData(event); })
+        .catch(() => { if (active) setError(true); });
+      return () => { active = false; };
     }, [params.id]);
+
+    if (error) {
+      return <div className="text-center py-40">This event is unavailable. <Link className="text-[#ea2c58] hover:underline" to="/event">Browse events</Link></div>;
+    }
 
     if (!data) {
       return <div>Loading...</div>;

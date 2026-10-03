@@ -21,32 +21,25 @@ const specs: ContentSpec[] = [
 
 const equal = (left: unknown, right: unknown) => JSON.stringify(left) === JSON.stringify(right);
 
-async function run() {
-  const dbUrl = process.env.DB_URL;
-  if (!dbUrl) throw new Error('DB_URL is required');
-  const rollbackId = process.argv.find((arg) => arg.startsWith('--rollback='))?.split('=')[1];
-  const apply = process.argv.includes('--apply');
-  if (rollbackId && apply) throw new Error('Choose either --rollback=<id> or --apply');
-  await mongoose.connect(dbUrl);
-  const db = mongoose.connection.db!;
+export async function migrateDemoContent(
+  db: NonNullable<typeof mongoose.connection.db>,
+  { apply = false, rollbackId }: { apply?: boolean; rollbackId?: string } = {}
+) {
   const backups = db.collection('contentMigrationBackups');
 
-  try {
-    if (rollbackId) {
+  if (rollbackId) {
       const saved = await backups.find({ migrationId: rollbackId }).toArray();
       if (!saved.length) throw new Error(`No saved originals found for migration ${rollbackId}`);
       if (!apply) {
-        console.log(JSON.stringify({ mode: 'rollback dry-run', migrationId: rollbackId, restoreCount: saved.length }, null, 2));
-        return;
+        return { mode: 'rollback dry-run', migrationId: rollbackId, restoreCount: saved.length };
       }
       for (const entry of saved) {
         const original = entry.original as Record<string, unknown>;
-        await db.collection(entry.collection as string).replaceOne({ _id: original._id }, original);
+        await db.collection(entry.collection as string).replaceOne({ _id: original._id as mongoose.Types.ObjectId }, original);
       }
       await backups.deleteMany({ migrationId: rollbackId });
-      console.log(`Restored ${saved.length} document(s) from ${rollbackId}`);
-      return;
-    }
+      return { mode: 'rollback', migrationId: rollbackId, restored: saved.length };
+  }
 
     const matches: Array<{ collection: string; original: Record<string, unknown>; replacement: Record<string, unknown> }> = [];
     let ambiguousPatternCount = 0;
@@ -66,19 +59,31 @@ async function run() {
       matches.push({ collection: spec.collection, original: exactMatches[0], replacement: spec.replacement as unknown as Record<string, unknown> });
     }
     const report = { mode: apply ? 'apply' : 'dry-run', reviewedLegacyPatterns: specs.length, matched: matches.length, ambiguousPatternsSkipped: ambiguousPatternCount, editedOrUnrecognizedRecords: 'Skipped because they did not match a complete reviewed legacy fixture', matches: matches.map(({ collection, original, replacement }) => ({ collection, id: String(original._id), from: original, to: replacement })) };
-    console.log(JSON.stringify(report, null, 2));
-    if (!apply || !matches.length) return;
+    if (!apply || !matches.length) return report;
 
     const migrationId = `${new Date().toISOString().replace(/[-:.TZ]/g, '')}-${randomUUID()}`;
     for (const match of matches) {
       await backups.insertOne({ migrationId, collection: match.collection, original: match.original, savedAt: new Date() });
       const { _id, ...replacementFields } = match.replacement;
-      await db.collection(match.collection).updateOne({ _id: match.original._id }, { $set: replacementFields });
+      await db.collection(match.collection).updateOne({ _id: match.original._id as mongoose.Types.ObjectId }, { $set: replacementFields });
     }
-    console.log(`Applied ${matches.length} update(s). Roll back with --rollback=${migrationId} (dry-run first, add --apply to restore).`);
+    return { ...report, migrationId, rollbackCollection: 'contentMigrationBackups' };
+}
+
+async function run() {
+  const dbUrl = process.env.DB_URL;
+  if (!dbUrl) throw new Error('DB_URL is required');
+  const rollbackId = process.argv.find((arg) => arg.startsWith('--rollback='))?.split('=')[1];
+  const apply = process.argv.includes('--apply');
+  await mongoose.connect(dbUrl);
+  try {
+    const report = await migrateDemoContent(mongoose.connection.db!, { apply, rollbackId });
+    console.log(JSON.stringify(report, null, 2));
   } finally {
     await mongoose.disconnect();
   }
 }
 
-run().catch((error) => { console.error(error); process.exitCode = 1; });
+if (require.main === module) {
+  run().catch((error) => { console.error(error); process.exitCode = 1; });
+}

@@ -22,10 +22,10 @@ const Features = () => {
               <h2 className="text-[25px] sm:text-[36px] text-white font-semibold mb-[20px]">
                 Ways to support a community
               </h2>
-              <p className="text-[14px] text-[#777777] font-light leading-6">
+              <p className="text-[14px] text-slate-100 font-light leading-6">
                 These are illustrative ideas. Programs and services have not been verified.
               </p>
-              <DemoLabel className="mt-3" />
+              <DemoLabel className="mt-3 text-white" />
             </div>
             <div className="flex gap-[50px] lg:gap-0 justify-center lg:justify-between text-center flex-wrap lg:flex-nowrap">
             {examples.map((example) => (
@@ -38,7 +38,7 @@ const Features = () => {
                 <h4 className="uppercase font-semibold text-[18px] text-white">
                   {example.title}
                 </h4>
-                <p className="font-light text-[14px] text-[#777777] leading-6">
+                <p className="font-light text-[14px] text-slate-100 leading-6">
                   {example.description}
                 </p>
               </div>

@@ -18,7 +18,7 @@ const Home = () => {
       try {
         const { data } = await axios.get("http://localhost:3000/api/home-content");
         setHomeData(data);
-      } catch {
+      } catch (error) {
         console.error("Failed to fetch home page data", error);
       } finally {
         setLoading(false)
@@ -31,6 +31,8 @@ const Home = () => {
   if (loading) {
     return <div>Loading...</div>
   }
+
+  if (!homeData) return <div className="text-center py-40">Home content is unavailable right now.</div>;
 
   return (
     <>

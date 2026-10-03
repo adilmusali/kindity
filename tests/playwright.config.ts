@@ -7,6 +7,21 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 const API_URL = process.env.API_URL || 'http://localhost:3000';
 const FRONT_URL = process.env.FRONT_URL || 'http://localhost:5173';
 const isCI = !!process.env.CI;
+const contentMockMode = process.env.CONTENT_MOCK_MODE === '1';
+
+const frontServer = {
+  command: 'npx vite --port 5173 --strictPort',
+  cwd: path.resolve(__dirname, '../front'),
+  url: FRONT_URL,
+  reuseExistingServer: !isCI,
+  timeout: 120_000,
+  env: {
+    ...process.env,
+    VITE_API_URL: API_URL,
+    VITE_STRIPE_PUBLISHABLE_KEY:
+      process.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_dummy',
+  },
+};
 
 export default defineConfig({
   testDir: '.',
@@ -21,7 +36,7 @@ export default defineConfig({
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
     ...(isCI ? [['github'] as const] : []),
   ],
-  globalSetup: require.resolve('./global-setup.ts'),
+  globalSetup: contentMockMode ? undefined : require.resolve('./global-setup.ts'),
   use: {
     trace: 'retain-on-failure',
     video: 'retain-on-failure',
@@ -47,7 +62,7 @@ export default defineConfig({
       },
     },
   ],
-  webServer: [
+  webServer: contentMockMode ? [frontServer] : [
     {
       command: 'npm run start:test',
       cwd: path.resolve(__dirname, '../back'),
@@ -65,18 +80,6 @@ export default defineConfig({
         STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || 'whsec_test',
       },
     },
-    {
-      command: 'npx vite --port 5173 --strictPort',
-      cwd: path.resolve(__dirname, '../front'),
-      url: FRONT_URL,
-      reuseExistingServer: !isCI,
-      timeout: 120_000,
-      env: {
-        ...process.env,
-        VITE_API_URL: API_URL,
-        VITE_STRIPE_PUBLISHABLE_KEY:
-          process.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_dummy',
-      },
-    },
+    frontServer,
   ],
 });

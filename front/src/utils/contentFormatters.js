@@ -1,5 +1,21 @@
 export const DATE_TO_BE_ANNOUNCED = "Date to be announced";
 
+export function formatAddedDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) {
+    return null;
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime()) || formatEventDate(value.slice(0, 10)) === DATE_TO_BE_ANNOUNCED) return null;
+
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
 export function formatEventDate(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     return DATE_TO_BE_ANNOUNCED;

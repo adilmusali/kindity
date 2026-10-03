@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 const Blog = () => {
   const [blogData, setBlogData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchBlogData = async () => {
@@ -16,6 +17,7 @@ const Blog = () => {
         setBlogData(data);
       } catch (error) {
         console.error("Failed to fetch blog page data", error);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -23,9 +25,11 @@ const Blog = () => {
     fetchBlogData();
   }, []);
 
-  if (loading || !blogData) {
+  if (loading) {
     return <div className="text-center py-40">Loading...</div>;
   }
+
+  if (error || !blogData) return <div className="text-center py-40">Stories are unavailable right now.</div>;
 
   return (
     <>

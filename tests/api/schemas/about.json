@@ -3,9 +3,9 @@
   "required": ["welcome", "features", "testimonial", "logo"],
   "additionalProperties": false,
   "properties": {
-    "welcome": { "type": "array" },
+    "welcome": { "type": "array", "items": { "type": "object", "properties": { "isDemo": { "type": "boolean" } } } },
     "features": { "type": "array" },
-    "testimonial": { "type": "array" },
+    "testimonial": { "type": "array", "items": { "type": "object", "properties": { "isDemo": { "type": "boolean" } } } },
     "logo": { "type": "array" }
   }
 }
