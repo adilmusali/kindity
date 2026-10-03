@@ -81,6 +81,7 @@ CI stays green while the bug exists. When the product is fixed, those tests star
 
 ## Docs in this folder
 
+- [content-release.md](./content-release.md) — content checks, migration record, rollback, and verified-content handoff
 - [test-plan.md](./test-plan.md)
 - [traceability-matrix.md](./traceability-matrix.md)
 - [issues/](./issues/) — BUG-01 … BUG-10
