@@ -23,5 +23,6 @@ export class LoginPage extends BasePage {
     await this.open();
     await this.fillCredentials(email, password);
     await this.submit();
+    await this.page.waitForURL((url) => url.pathname === '/');
   }
 }
