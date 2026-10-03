@@ -33,7 +33,7 @@ export const rbacMatrix: RbacCase[] = [
   { id: 'RBAC-21', method: 'GET', path: '/api/admin/donations', role: 'user', expectedStatus: 403 },
   { id: 'RBAC-22', method: 'GET', path: '/api/admin/donations', role: 'admin', expectedStatus: 200 },
 
-  // BUG-02: writes without protect
+  // Anonymous content writes require authentication.
   {
     id: 'RBAC-30',
     method: 'POST',
@@ -41,7 +41,6 @@ export const rbacMatrix: RbacCase[] = [
     role: 'anon',
     expectedStatus: 401,
     body: { header: 'H', desc: 'D' },
-    knownBug: 'BUG-02',
   },
   {
     id: 'RBAC-31',
@@ -50,7 +49,6 @@ export const rbacMatrix: RbacCase[] = [
     role: 'anon',
     expectedStatus: 401,
     body: { header: 'H', desc: 'D' },
-    knownBug: 'BUG-02',
   },
 
   // BUG-03: commented-out write routes

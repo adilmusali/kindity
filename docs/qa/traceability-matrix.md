@@ -43,7 +43,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 
 | Flow | Spec | Bug |
 |------|------|-----|
-| Register → login → logout | E2E-AUTH `ui/specs/auth.spec.ts` | BUG-04 (Azure URL), BUG-05 (prod cookie) |
+| Register → login → logout | E2E-AUTH `ui/specs/auth.spec.ts` | BUG-04 (API URL), BUG-05 (prod cookie) |
 | Anon protected redirect | E2E-PROTECTED | BUG-09 (refresh race) |
 | Donate → history | E2E-DONATION | BUG-06/07 (payment) |
 | Admin sees all donations | E2E-ADMIN | |

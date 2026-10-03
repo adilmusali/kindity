@@ -40,6 +40,24 @@ describe('INT-AUTH: auth routes', () => {
     expect(second.status).toBe(400);
   });
 
+  it('ignores an admin role supplied during registration', async () => {
+    const agent = request.agent(app);
+    const register = await agent.post('/register').send({
+      name: 'Regular User',
+      email: 'role-int@example.com',
+      password: 'abcdef',
+      role: 'admin',
+    });
+
+    expect(register.status).toBe(201);
+    expect(register.body.user.role).toBe('user');
+    const created = await UserModel.findOne({ email: 'role-int@example.com' });
+    expect(created?.role).toBe('user');
+
+    const adminDonations = await agent.get('/api/admin/donations');
+    expect(adminDonations.status).toBe(403);
+  });
+
   it('login sets cookie for existing user', async () => {
     await UserModel.create({
       name: 'Login',

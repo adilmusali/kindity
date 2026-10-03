@@ -19,7 +19,7 @@ export const Register = () => {
 
   const handleRegistration = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/register", data);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/register`, data);
 
       if (response.data.error) {
         toast.error(response.data.error);

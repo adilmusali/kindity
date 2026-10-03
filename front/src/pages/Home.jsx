@@ -16,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3000/api/home-content");
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/home-content`);
         setHomeData(data);
       } catch {
         console.error("Failed to fetch home page data", error);
