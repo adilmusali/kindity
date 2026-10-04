@@ -124,26 +124,29 @@ describe('UNIT-AUTH-CTRL: registerUser', () => {
     }
   );
 
-  // BUG-05: sameSite strict breaks cross-site session cookies
-  it.failing(
+  it(
     'BUG-05: production cookie should use SameSite=None with Secure (https://github.com/adilmusali/kindity/issues/5)',
     async () => {
       const prev = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'production';
-      const req = {
-        body: { name: 'Prod', email: 'prod@example.com', password: 'abcdef' },
-      } as unknown as Request;
-      const res = mockRes();
-      await registerUser(req, res);
-      expect(res.cookie).toHaveBeenCalledWith(
-        'token',
-        expect.any(String),
-        expect.objectContaining({
-          sameSite: 'none',
-          secure: true,
-        })
-      );
-      process.env.NODE_ENV = prev;
+      try {
+        process.env.NODE_ENV = 'production';
+        const req = {
+          body: { name: 'Prod', email: 'prod@example.com', password: 'abcdef' },
+        } as unknown as Request;
+        const res = mockRes();
+        await registerUser(req, res);
+        expect(res.cookie).toHaveBeenCalledWith(
+          'token',
+          expect.any(String),
+          expect.objectContaining({
+            sameSite: 'none',
+            secure: true,
+          })
+        );
+      } finally {
+        if (prev === undefined) delete process.env.NODE_ENV;
+        else process.env.NODE_ENV = prev;
+      }
     }
   );
 });

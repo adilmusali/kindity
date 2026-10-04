@@ -64,7 +64,7 @@ Bug-revealing assertions use expected-failure markers linked to `BUG-0X`. An une
 | No Stripe secrets in CI | Payment create-intent / card E2E skip; webhook uses self-signed events |
 | Missing frontend API URL | Set `VITE_API_URL` when building the frontend; BUG-04 documents the original hardcoded URL defect |
 | Docker Desktop unavailable on some workstations | Jest still runs; Playwright documented as needing Mongo |
-| `sameSite: strict` with frontend and API on different sites | BUG-05; local same-site localhost ports still send cookies |
+| Cross-site cookies need HTTPS and browser permission for third-party cookies | BUG-05 uses `SameSite=None; Secure` in production; verify the session on separate HTTPS sites |
 
 ## 9. Defect workflow
 
