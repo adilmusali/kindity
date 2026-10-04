@@ -1,7 +1,17 @@
-import { Request, Response } from 'express';
+import { CookieOptions, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UserModel, { IUser } from '../models/userModel';
 import { hashPassword, comparePassword } from '../helpers/auth';
+
+const getAuthCookieOptions = (): CookieOptions => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'strict',
+    path: '/',
+  };
+};
 
 const createToken = (userId: string, email: string, role: string): string => {
   const jwtSecret = process.env.JWT_SECRET;
@@ -53,9 +63,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
     delete userResponse.password;
 
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...getAuthCookieOptions(),
       maxAge: 24 * 60 * 60 * 1000
     });
 
@@ -96,9 +104,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     delete userResponse.password;
 
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...getAuthCookieOptions(),
       maxAge: 24 * 60 * 60 * 1000
     });
     
@@ -145,10 +151,8 @@ export const getProfile = async (req: Request, res: Response): Promise<void> => 
 
 export const logoutUser = (req: Request, res: Response): void => {
   res.cookie('token', '', {
-    httpOnly: true,
+    ...getAuthCookieOptions(),
     expires: new Date(0),
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
   });
   res.status(200).json({ message: "Logout successfull" });
 }

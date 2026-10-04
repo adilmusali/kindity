@@ -1,8 +1,10 @@
 import express from 'express';
-import { getNewsById } from '../controllers/newsController';
+import { createNews, getNewsById } from '../controllers/newsController';
+import { protect, isAdmin } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
+router.post('/', protect, isAdmin, createNews);
 router.get('/:id', getNewsById);
 
 export default router;

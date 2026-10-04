@@ -37,7 +37,7 @@ test.describe('E2E-ADMIN', () => {
     await adminDashboardPage.expectDonorEmail(seededUsers.user.email);
   });
 
-  test.fail('BUG-03 #3: AddEvent should create an event visible on /event', async ({
+  test('BUG-03: AddEvent creates an event visible on /event', async ({
     page,
     loginPage,
     addEventPage,
@@ -51,6 +51,22 @@ test.describe('E2E-ADMIN', () => {
       'Created by E2E test'
     );
     await page.goto('/event');
+    await expect(page.getByText(headerText)).toBeVisible({ timeout: 10_000 });
+  });
+
+  test('BUG-03: AddNews creates a story visible on /blog', async ({ page, loginPage }) => {
+    await loginPage.login(seededUsers.admin.email, seededUsers.admin.password);
+    const headerText = `E2E News ${Date.now()}`;
+    await page.goto('/addNews');
+    await page.getByPlaceholder('Enter Header').fill(headerText);
+    await page.getByPlaceholder('Enter Description').fill('Created by E2E test');
+    await page.getByPlaceholder('Enter Image Source').fill('https://example.com/news.jpg');
+    for (const category of ['Category 1', 'Category 2', 'Category 3', 'Category 4']) {
+      await page.getByPlaceholder(`Enter ${category}`).fill('community');
+    }
+    await page.getByPlaceholder('Enter User').fill('admin');
+    await page.getByRole('button', { name: 'Add' }).click();
+    await page.goto('/blog');
     await expect(page.getByText(headerText)).toBeVisible({ timeout: 10_000 });
   });
 });

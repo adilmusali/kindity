@@ -26,8 +26,8 @@ test.describe('API-PAY', () => {
     expect(neg.status()).toBe(400);
   });
 
-  for (const amount of ['abc', 0.001, 10.555, 1e10] as const) {
-    test.fail(
+  for (const amount of ['abc', '25', null, true, 0.001, 10.555, 10000.01, 1e10] as const) {
+    test(
       `BUG-06 #6: amount ${amount} should be rejected with 400`,
       async ({ freshUser }) => {
         const res = await freshUser.context.post('/api/payment/create-payment-intent', {
@@ -92,7 +92,7 @@ test.describe('API-PAY', () => {
     expect(matches[0].amount).toBe(25);
   });
 
-  test.fail('BUG-07 #7: invalid userId on webhook should return 5xx', async ({ asAnon }) => {
+  test('BUG-07 #7: invalid userId on webhook should return 5xx', async ({ asAnon }) => {
     const event = buildPaymentIntentSucceededEvent({
       paymentIntentId: `pi_bad_${Date.now()}`,
       userId: 'not-a-valid-objectid',

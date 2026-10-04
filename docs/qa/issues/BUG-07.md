@@ -14,14 +14,20 @@
 
 5xx so Stripe retries; donation eventually persisted.
 
-## Actual
+## Original behavior
 
 Error is logged; handler still `res.send()` (200). Stripe will not retry; donation is lost.
 
-## Evidence
+## Regression coverage
 
-- UNIT-PAY / API-PAY `it.failing` / `test.fail` BUG-07
+- UNIT-PAY: failed saves return 500 without acknowledging success; a retried event saves one donation.
+- INT-PAY: local signed webhook payloads cover save failure, retry, repeated and concurrent deliveries, and unrelated duplicate-key errors.
+- API-PAY: the invalid-user metadata case runs as a normal regression test.
 
-## Suggested fix
+Validation on 2026-10-04: five targeted payment/user suites passed (66 tests), and backend `tsc --noEmit` passed. Webhooks were signed locally; hosted Playwright and live Stripe delivery were not run.
 
-On DB failure return 500; treat duplicate `stripePaymentId` as success (idempotent 200).
+## Resolution
+
+Return 500 with a controlled JSON error when donation persistence fails so the sender can retry. A duplicate-key error is acknowledged with 200 only when its index and conflicting value identify the same `stripePaymentId`. Other database errors remain failures.
+
+Successful and ignored events retain their existing 200 response; invalid signatures still return 400. The existing unique `stripePaymentId` index must remain enabled for concurrent delivery safety. No schema migration or frontend change is required.

@@ -14,7 +14,19 @@ const mockRes = () => {
   return res as Response;
 };
 
+afterEach(() => jest.restoreAllMocks());
+
 describe('UNIT-USER: getDonationHistory', () => {
+  it('BUG-08: returns a controlled 500 when the history query rejects', async () => {
+    const query = DonationHistoryModel.find();
+    jest.spyOn(query, 'exec').mockRejectedValueOnce(new Error('private DB details'));
+    jest.spyOn(DonationHistoryModel, 'find').mockReturnValueOnce(query);
+    const req = { user: { _id: '507f1f77bcf86cd799439011' } } as unknown as Request;
+    const res = mockRes();
+    await getDonationHistory(req, res, jest.fn());
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Unable to load donation history.' });
+  });
   it('returns only the requesting user donations sorted newest first', async () => {
     const userA = await UserModel.create({
       name: 'A',
@@ -64,6 +76,18 @@ describe('UNIT-USER: getDonationHistory', () => {
 });
 
 describe('UNIT-USER: updateUserProfile', () => {
+  it('BUG-08: returns a controlled 500 when profile lookup rejects', async () => {
+    const query = UserModel.findById('507f1f77bcf86cd799439011');
+    jest.spyOn(query, 'exec').mockRejectedValueOnce(new Error('private DB details'));
+    jest.spyOn(UserModel, 'findById').mockReturnValueOnce(query);
+    const req = {
+      user: { _id: '507f1f77bcf86cd799439011' }, body: { name: 'Changed' },
+    } as unknown as Request;
+    const res = mockRes();
+    await updateUserProfile(req, res, jest.fn());
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Unable to update profile.' });
+  });
   it('updates name and email for the authenticated user', async () => {
     const user = await UserModel.create({
       name: 'Old',
@@ -91,9 +115,8 @@ describe('UNIT-USER: updateUserProfile', () => {
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  // BUG-08: unhandled async error on duplicate email
-  it.failing(
-    'BUG-08: returns 400/409 when changing email to an existing one (https://github.com/adilmusali/kindity/issues/8)',
+  it(
+    'BUG-08: returns 409 when changing email to an existing one (https://github.com/adilmusali/kindity/issues/8)',
     async () => {
       await UserModel.create({
         name: 'Taken',
@@ -114,7 +137,9 @@ describe('UNIT-USER: updateUserProfile', () => {
       const statusCalls = (res.status as jest.Mock).mock.calls;
       expect(statusCalls.length).toBeGreaterThan(0);
       const code = statusCalls[0][0];
-      expect([400, 409]).toContain(code);
+      expect(code).toBe(409);
+      expect(res.json).toHaveBeenCalledWith({ error: 'Email is already in use.' });
+      expect((await UserModel.findById(user._id))!.email).toBe('me@example.com');
     }
   );
 });

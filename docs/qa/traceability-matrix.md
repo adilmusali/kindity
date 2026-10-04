@@ -11,13 +11,13 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | Route | Method | Anon | User | Admin | Tests | Bug |
 |-------|--------|------|------|-------|-------|-----|
 | `/register` | POST | 201/400 | — | — | UNIT-AUTH-CTRL, INT-AUTH, API-AUTH | BUG-01 (role) |
-| `/login` | POST | 200/401 | — | — | UNIT-AUTH-CTRL, INT-AUTH, API-AUTH, E2E-AUTH | BUG-10 (rate limit / errors) |
+| `/login` | POST | 200/401/429 | — | — | UNIT-AUTH-CTRL, INT-AUTH, INT-LOGIN-LIMIT, API-AUTH, E2E-AUTH, E2E-LOGIN-ERRORS | |
 | `/logout` | POST | 200 | 200 | 200 | UNIT-AUTH-CTRL, INT-AUTH, API-AUTH, E2E-AUTH | |
 | `/profile` | GET | 401 | 200 | 200 | UNIT-AUTH-CTRL, UNIT-AUTH-MW, API-AUTH | |
-| `/api/users/donations` | GET | 401 | 200 | 200 | INT-RBAC, RBAC-10/11, UNIT-USER | |
-| `/api/users/profile` | PUT | 401 | 200 | 200 | INT-RBAC, RBAC-12/13, UNIT-USER | BUG-08 |
-| `/api/payment/create-payment-intent` | POST | 401 | 200* | 200* | INT-RBAC, RBAC-14, UNIT-PAY, API-PAY | BUG-06 |
-| `/api/payment/webhook` | POST | 200/400† | — | — | INT-PAY, API-PAY, UNIT-PAY | BUG-07 |
+| `/api/users/donations` | GET | 401 | 200/500 | 200/500 | INT-RBAC, RBAC-10/11, UNIT-USER, INT-USER | |
+| `/api/users/profile` | PUT | 401 | 200/400/409/500 | 200/400/409/500 | INT-RBAC, RBAC-12/13, UNIT-USER, INT-USER | |
+| `/api/payment/create-payment-intent` | POST | 401 | 200*/400 | 200*/400 | INT-RBAC, RBAC-14, UNIT-PAY, INT-PAY, API-PAY | |
+| `/api/payment/webhook` | POST | 200/400/500† | — | — | INT-PAY, API-PAY, UNIT-PAY | |
 | `/api/admin/donations` | GET | 401 | 403 | 200 | INT-RBAC, RBAC-20/21/22, E2E-ADMIN | |
 | `/api/events` | GET | 200 | 200 | 200 | INT-CONTENT, CON, RBAC-01 | |
 | `/api/events/:id` | GET | 200/404 | 200/404 | 200/404 | CON | |
@@ -32,29 +32,29 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | `/kindity/contact` | GET | 200 | 200 | 200 | RBAC-07 | |
 | `/kindity/contact` | POST | **401** | 401‡ | 201‡ | RBAC-31 | BUG-02 |
 | `/kindity/contact/:id` | PUT/DELETE | **401** | 401‡ | 200‡ | INT-RBAC | BUG-02 |
-| `/kindity/home/events` | POST | 401 | 401 | **2xx** | INT-CONTENT, RBAC-40, E2E-ADMIN | BUG-03 |
-| `/kindity/blog/news` | POST | 401 | 401 | **2xx** | INT-CONTENT, RBAC-41 | BUG-03 |
+| `/api/events` | POST | 401 | 403 | 201 | INT-CONTENT, RBAC-40/42/43, E2E-ADMIN | |
+| `/api/news` | POST | 401 | 403 | 201 | INT-CONTENT, RBAC-41/44/45, E2E-ADMIN | |
 
 \* Valid amount + Stripe key.  
-† Signature verification.  
+† Invalid signatures return 400; persistence failures return 500; successful processing and duplicates of the same payment return 200.
 ‡ Desired after protect/isAdmin is added (not yet implemented).
 
 ## UI flows
 
 | Flow | Spec | Bug |
 |------|------|-----|
-| Register → login → logout | E2E-AUTH `ui/specs/auth.spec.ts` | BUG-04 (API URL), BUG-05 (prod cookie) |
-| Anon protected redirect | E2E-PROTECTED | BUG-09 (refresh race) |
-| Donate → history | E2E-DONATION | BUG-06/07 (payment) |
+| Register → login → logout | E2E-AUTH `ui/specs/auth.spec.ts`, INT-AUTH (production cookie headers) | BUG-04 (API URL) |
+| Anon protected redirect | E2E-PROTECTED, E2E-SESSION | |
+| Donate → history | E2E-DONATION | |
 | Admin sees all donations | E2E-ADMIN | |
-| AddEvent creates event | E2E-ADMIN `test.fail` | BUG-03 |
-| Admin reload stays on dashboard | E2E-SESSION `test.fail` | BUG-09 |
-| Login 500 messaging | E2E-LOGIN-ERRORS `test.fail` | BUG-10 |
+| AddEvent creates event | E2E-ADMIN | |
+| Admin and user reload preserve authorized routes after session loading | E2E-SESSION | |
+| Login credential, rate limit, server, and network error messages | E2E-LOGIN-ERRORS | |
 
 ## Cookie / frontend config defects
 
 | Finding | Evidence | Bug |
 |---------|----------|-----|
 | Hardcoded `http://localhost:3000` in Login, Register, Logout, AddEvent, AddNews, AdminDashboard, Home | `front/src/pages/*`, `FirstHeader.jsx` | BUG-04 |
-| `sameSite: 'strict'` on auth cookie | `authControllers.ts` | BUG-05 |
-| `donation.save()` not awaited | `donationRoute.ts` / `contactRoute.ts` | BUG-10 |
+| Production auth cookies use `SameSite=None; Secure`; local cookies use `SameSite=Strict` | UNIT-AUTH-CTRL, INT-AUTH; separate HTTPS-site browser check pending | BUG-05 (implemented) |
+| Donation/contact creation awaits persistence; validation returns 400 and save failures return 500 | INT-CMS-SAVE | |

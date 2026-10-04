@@ -10,10 +10,17 @@ const get = async (_req: Request, res: Response) => {
 }
 
 const post = async (req: Request, res: Response) => {
-    const uploadData = req.body;
-    const contact = new Contact(uploadData);
-    contact.save();
-    res.send(contact);
+    try {
+        const contact = new Contact({ header: req.body?.header, desc: req.body?.desc });
+        await contact.save();
+        res.send(contact);
+    } catch (error) {
+        if (error instanceof Error && error.name === 'ValidationError') {
+            res.status(400).json({ error: 'Invalid contact content.' });
+            return;
+        }
+        res.status(500).json({ error: 'Unable to save contact content.' });
+    }
 }
 
 const del = async (req: Request, res: Response) => {

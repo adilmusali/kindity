@@ -8,8 +8,8 @@
 
 | ID | Severity | Note |
 |----|----------|------|
-| BUG-06 | Medium | `amount * 100` without integer/upper-bound checks |
-| BUG-07 | Medium | Webhook catch logs DB errors then still `res.send()` |
+| BUG-06 | Medium | Implemented: finite numeric amounts, cent precision, and a $10,000 maximum are validated before Stripe calls |
+| BUG-07 | Medium | Implemented: failed saves return 500; duplicates of the same Stripe payment return 200 and keep one donation |
 | NEW | Medium | Anonymous donate: `DonationForm` posts without handling 401 — UI can stick in “Processing…” because `setIsProcessing(false)` is skipped when `axios.post` throws before the payment result branch |
 | NEW | Low | Name/email collected in form are not sent to create-payment-intent (only used in `confirmCardPayment` billing_details) |
 

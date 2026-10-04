@@ -51,20 +51,19 @@ export const rbacMatrix: RbacCase[] = [
     body: { header: 'H', desc: 'D' },
   },
 
-  // BUG-03: commented-out write routes
+  // Admin-only event and news creation (BUG-03)
   {
     id: 'RBAC-40',
     method: 'POST',
-    path: '/kindity/home/events',
+    path: '/api/events',
     role: 'admin',
     expectedStatus: 201,
     body: { img: 'https://example.com/e.jpg', header: 'E', desc: 'D' },
-    knownBug: 'BUG-03',
   },
   {
     id: 'RBAC-41',
     method: 'POST',
-    path: '/kindity/blog/news',
+    path: '/api/news',
     role: 'admin',
     expectedStatus: 201,
     body: {
@@ -77,6 +76,9 @@ export const rbacMatrix: RbacCase[] = [
       category4: 'd',
       user: 'admin',
     },
-    knownBug: 'BUG-03',
   },
+  { id: 'RBAC-42', method: 'POST', path: '/api/events', role: 'anon', expectedStatus: 401, body: { img: 'https://example.com/e.jpg', header: 'E', desc: 'D' } },
+  { id: 'RBAC-43', method: 'POST', path: '/api/events', role: 'user', expectedStatus: 403, body: { img: 'https://example.com/e.jpg', header: 'E', desc: 'D' } },
+  { id: 'RBAC-44', method: 'POST', path: '/api/news', role: 'anon', expectedStatus: 401, body: { header: 'N', desc: 'D', img: 'https://example.com/n.jpg', category1: 'a', category2: 'b', category3: 'c', category4: 'd', user: 'admin' } },
+  { id: 'RBAC-45', method: 'POST', path: '/api/news', role: 'user', expectedStatus: 403, body: { header: 'N', desc: 'D', img: 'https://example.com/n.jpg', category1: 'a', category2: 'b', category3: 'c', category4: 'd', user: 'admin' } },
 ];

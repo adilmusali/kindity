@@ -3,29 +3,40 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { blogschema } from "../schema/blogSchema";
 import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
-const AddEvent = () => {
+const AddNews = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(blogschema),
   });
 
-  const postData = async () => {
-    const values = getValues();
-    axios.post(`${import.meta.env.VITE_API_URL}/kindity/blog/news`, {
-      header: values.header,
-      desc: values.desc,
-      img: values.img,
-      category1: values.category1,
-      category2: values.category2,
-      category3: values.category3,
-      category4: values.category4,
-      user: values.user
-    });
+  const [saveError, setSaveError] = useState("");
+
+  const postData = async (values) => {
+    setSaveError("");
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/news`, {
+        header: values.header,
+        desc: values.desc,
+        img: values.img,
+        category1: values.category1,
+        category2: values.category2,
+        category3: values.category3,
+        category4: values.category4,
+        user: values.user,
+      });
+      toast.success("News story created successfully.");
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Could not create news story. Please try again.";
+      setSaveError(message);
+      toast.error(message);
+    }
   };
 
   return (
@@ -141,12 +152,18 @@ const AddEvent = () => {
             </div>
             </div>
             </div>
+            {saveError && (
+              <p role="alert" className="text-red-500">
+                {saveError}
+              </p>
+            )}
             <button
               type="submit"
+              disabled={isSubmitting}
               className="px-5 py-2 text-white bg-[#ea2c58] 
             hover:bg-white hover:text-slate-500 border border-[#ea2c58] transition duration-500 mt-[20px]"
             >
-              Add
+              {isSubmitting ? "Saving..." : "Add"}
             </button>
           </form>
         </div>
@@ -155,4 +172,4 @@ const AddEvent = () => {
   );
 };
 
-export default AddEvent;
+export default AddNews;

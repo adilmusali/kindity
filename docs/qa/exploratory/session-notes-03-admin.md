@@ -9,7 +9,7 @@
 | ID | Severity | Note |
 |----|----------|------|
 | BUG-02 | Critical | `/kindity/donation` and `/kindity/contact` writes have no `protect` |
-| BUG-03 | High | AddEvent/AddNews post to `/kindity/home/events` and `/kindity/blog/news` which are not mounted |
+| BUG-03 | High | Resolved: AddEvent/AddNews use admin-protected `POST /api/events` and `POST /api/news` |
 | BUG-04 | High | AdminDashboard and Add* pages use localhost |
 | NEW | High | Admin Delete on events calls `DELETE /api/events/:id` but `eventsRoutes.ts` only defines GET — deletes 404 |
 | NEW | High | Blog delete calls `DELETE /api/news/:id` but `newsRoutes.ts` only has GET `/:id` |

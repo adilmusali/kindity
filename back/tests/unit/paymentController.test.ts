@@ -80,8 +80,8 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     expect(res.send).toHaveBeenCalledWith({ clientSecret: 'pi_test_secret_abc' });
   });
 
-  // BUG-06: amount validation gaps
-  it.failing(
+  // BUG-06: invalid amounts must be rejected before contacting Stripe.
+  it(
     'BUG-06: rejects non-numeric amount string (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -97,7 +97,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     }
   );
 
-  it.failing(
+  it(
     'BUG-06: rejects 0.001 (sub-cent) (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -113,7 +113,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     }
   );
 
-  it.failing(
+  it(
     'BUG-06: rejects 10.555 (non-integer cents) (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -129,7 +129,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     }
   );
 
-  it.failing(
+  it(
     'BUG-06: rejects absurdly large amount 1e10 (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -146,7 +146,40 @@ describe('UNIT-PAY: createPaymentIntent', () => {
   );
 });
 
+describe('UNIT-PAY: amount boundaries (BUG-06)', () => {
+  beforeEach(() => mockCreate.mockReset());
+
+  it.each(
+    [undefined, null, true, false, [], {}, { toString: null }, '25', NaN, Infinity, -Infinity, 10000.01, 1.0001]
+      .map((amount): [unknown] => [amount])
+  )(
+    'rejects invalid amount %p without calling Stripe', async (amount) => {
+      const req = { body: { amount }, user: { email: 'donor@example.com' } } as unknown as Request;
+      const res = mockRes();
+      await createPaymentIntent(req, res, jest.fn());
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: expect.any(String) });
+      expect(mockCreate).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each([[0.01, 1], [0.29, 29], [1.1, 110], [10.55, 1055], [9999.99, 999999], [10000, 1000000]])(
+    'sends amount %p to Stripe as exactly %p cents', async (amount, cents) => {
+      mockCreate.mockResolvedValue({ client_secret: 'pi_test_secret_boundary' });
+      const req = {
+        body: { amount }, user: { _id: '507f1f77bcf86cd799439011', email: 'donor@example.com' },
+      } as unknown as Request;
+      const res = mockRes();
+      await createPaymentIntent(req, res, jest.fn());
+      expect(mockCreate).toHaveBeenCalledTimes(1);
+      expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({ amount: cents, currency: 'usd' }));
+      expect(res.send).toHaveBeenCalledWith({ clientSecret: 'pi_test_secret_boundary' });
+    }
+  );
+});
+
 describe('UNIT-PAY: handleStripeWebhook', () => {
+  afterEach(() => jest.restoreAllMocks());
   beforeEach(() => {
     mockCreate.mockReset();
     mockConstructEvent.mockReset();
@@ -220,12 +253,13 @@ describe('UNIT-PAY: handleStripeWebhook', () => {
     await handleStripeWebhook(req, res1, jest.fn());
     const res2 = mockRes();
     await handleStripeWebhook(req, res2, jest.fn());
+    expect(res2.status).toHaveBeenCalledWith(200);
+    expect(res2.send).toHaveBeenCalled();
     const count = await DonationHistoryModel.countDocuments({ stripePaymentId: 'pi_test_dup' });
     expect(count).toBe(1);
   });
 
-  // BUG-07: DB save errors swallowed, still returns 200
-  it.failing(
+  it(
     'BUG-07: returns 5xx when donation save fails (https://github.com/adilmusali/kindity/issues/7)',
     async () => {
       const user = await UserModel.create({
@@ -255,7 +289,15 @@ describe('UNIT-PAY: handleStripeWebhook', () => {
       await handleStripeWebhook(req, res, jest.fn());
       expect(res.status).toHaveBeenCalledWith(expect.any(Number));
       const statusArg = (res.status as jest.Mock).mock.calls[0][0];
-      expect(statusArg).toBeGreaterThanOrEqual(500);
+      expect(statusArg).toBe(500);
+      expect(res.send).not.toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith({ error: expect.any(String) });
+      expect(await DonationHistoryModel.countDocuments({ stripePaymentId: 'pi_save_fail' })).toBe(0);
+
+      const retry = mockRes();
+      await handleStripeWebhook(req, retry, jest.fn());
+      expect(retry.send).toHaveBeenCalled();
+      expect(await DonationHistoryModel.countDocuments({ stripePaymentId: 'pi_save_fail' })).toBe(1);
     }
   );
 });

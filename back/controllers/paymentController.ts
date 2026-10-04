@@ -2,6 +2,8 @@ import { RequestHandler } from 'express';
 import Stripe from 'stripe';
 import DonationHistoryModel from '../models/donationHistoryModel';
 
+const MAX_DONATION_AMOUNT = 10_000;
+
 const getStripe = () => {
   const apiKey = process.env.STRIPE_SECRET_KEY?.trim();
   return apiKey ? new Stripe(apiKey) : null;
@@ -19,9 +21,16 @@ export const createPaymentIntent: RequestHandler = async (req, res) => {
     return;
   }
 
-  if (!amount || amount <= 0) {
-    console.error(`--- ERROR: Invalid amount received: ${amount} ---`);
-    res.status(400).json({ error: 'A valid amount is required.' });
+  if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0 || amount > MAX_DONATION_AMOUNT) {
+    console.error('Invalid donation amount.');
+    res.status(400).json({ error: 'Amount must be a positive number no greater than 10000 USD.' });
+    return;
+  }
+
+  const amountInCents = Math.round(amount * 100);
+  // Round-trip through cents to reject excess precision without rejecting 0.29, for example.
+  if (amountInCents / 100 !== amount) {
+    res.status(400).json({ error: 'Amount must have at most two decimal places.' });
     return;
   }
 
@@ -37,7 +46,7 @@ export const createPaymentIntent: RequestHandler = async (req, res) => {
     console.log('--- 3. Contacting Stripe to create Payment Intent... ---');
     
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount * 100,
+      amount: amountInCents,
       currency: 'usd',
       payment_method_types: ['card'],
       metadata: {
@@ -93,7 +102,20 @@ export const handleStripeWebhook: RequestHandler = async (req, res) => {
         await newDonation.save();
         console.log(`Donation from user ${userId} for ${amount} ${currency} saved.`);
       } catch (dbError) {
+        const duplicateError = dbError as {
+          code?: number;
+          keyPattern?: { stripePaymentId?: number };
+          keyValue?: { stripePaymentId?: string };
+        };
+        if (duplicateError?.code === 11000 &&
+            duplicateError.keyPattern?.stripePaymentId === 1 &&
+            duplicateError.keyValue?.stripePaymentId === stripePaymentId) {
+          res.status(200).send();
+          return;
+        }
         console.error('Error saving donation to database:', dbError);
+        res.status(500).json({ error: 'Failed to save donation. Please retry the webhook.' });
+        return;
       }
 
       break;
