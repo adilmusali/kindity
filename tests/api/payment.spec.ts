@@ -92,7 +92,7 @@ test.describe('API-PAY', () => {
     expect(matches[0].amount).toBe(25);
   });
 
-  test.fail('BUG-07 #7: invalid userId on webhook should return 5xx', async ({ asAnon }) => {
+  test('BUG-07 #7: invalid userId on webhook should return 5xx', async ({ asAnon }) => {
     const event = buildPaymentIntentSucceededEvent({
       paymentIntentId: `pi_bad_${Date.now()}`,
       userId: 'not-a-valid-objectid',

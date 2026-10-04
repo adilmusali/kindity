@@ -179,6 +179,7 @@ describe('UNIT-PAY: amount boundaries (BUG-06)', () => {
 });
 
 describe('UNIT-PAY: handleStripeWebhook', () => {
+  afterEach(() => jest.restoreAllMocks());
   beforeEach(() => {
     mockCreate.mockReset();
     mockConstructEvent.mockReset();
@@ -252,12 +253,13 @@ describe('UNIT-PAY: handleStripeWebhook', () => {
     await handleStripeWebhook(req, res1, jest.fn());
     const res2 = mockRes();
     await handleStripeWebhook(req, res2, jest.fn());
+    expect(res2.status).toHaveBeenCalledWith(200);
+    expect(res2.send).toHaveBeenCalled();
     const count = await DonationHistoryModel.countDocuments({ stripePaymentId: 'pi_test_dup' });
     expect(count).toBe(1);
   });
 
-  // BUG-07: DB save errors swallowed, still returns 200
-  it.failing(
+  it(
     'BUG-07: returns 5xx when donation save fails (https://github.com/adilmusali/kindity/issues/7)',
     async () => {
       const user = await UserModel.create({
@@ -287,7 +289,15 @@ describe('UNIT-PAY: handleStripeWebhook', () => {
       await handleStripeWebhook(req, res, jest.fn());
       expect(res.status).toHaveBeenCalledWith(expect.any(Number));
       const statusArg = (res.status as jest.Mock).mock.calls[0][0];
-      expect(statusArg).toBeGreaterThanOrEqual(500);
+      expect(statusArg).toBe(500);
+      expect(res.send).not.toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith({ error: expect.any(String) });
+      expect(await DonationHistoryModel.countDocuments({ stripePaymentId: 'pi_save_fail' })).toBe(0);
+
+      const retry = mockRes();
+      await handleStripeWebhook(req, retry, jest.fn());
+      expect(retry.send).toHaveBeenCalled();
+      expect(await DonationHistoryModel.countDocuments({ stripePaymentId: 'pi_save_fail' })).toBe(1);
     }
   );
 });

@@ -102,7 +102,20 @@ export const handleStripeWebhook: RequestHandler = async (req, res) => {
         await newDonation.save();
         console.log(`Donation from user ${userId} for ${amount} ${currency} saved.`);
       } catch (dbError) {
+        const duplicateError = dbError as {
+          code?: number;
+          keyPattern?: { stripePaymentId?: number };
+          keyValue?: { stripePaymentId?: string };
+        };
+        if (duplicateError?.code === 11000 &&
+            duplicateError.keyPattern?.stripePaymentId === 1 &&
+            duplicateError.keyValue?.stripePaymentId === stripePaymentId) {
+          res.status(200).send();
+          return;
+        }
         console.error('Error saving donation to database:', dbError);
+        res.status(500).json({ error: 'Failed to save donation. Please retry the webhook.' });
+        return;
       }
 
       break;

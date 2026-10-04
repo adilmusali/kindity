@@ -17,7 +17,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | `/api/users/donations` | GET | 401 | 200 | 200 | INT-RBAC, RBAC-10/11, UNIT-USER | |
 | `/api/users/profile` | PUT | 401 | 200 | 200 | INT-RBAC, RBAC-12/13, UNIT-USER | BUG-08 |
 | `/api/payment/create-payment-intent` | POST | 401 | 200*/400 | 200*/400 | INT-RBAC, RBAC-14, UNIT-PAY, INT-PAY, API-PAY | |
-| `/api/payment/webhook` | POST | 200/400† | — | — | INT-PAY, API-PAY, UNIT-PAY | BUG-07 |
+| `/api/payment/webhook` | POST | 200/400/500† | — | — | INT-PAY, API-PAY, UNIT-PAY | |
 | `/api/admin/donations` | GET | 401 | 403 | 200 | INT-RBAC, RBAC-20/21/22, E2E-ADMIN | |
 | `/api/events` | GET | 200 | 200 | 200 | INT-CONTENT, CON, RBAC-01 | |
 | `/api/events/:id` | GET | 200/404 | 200/404 | 200/404 | CON | |
@@ -36,7 +36,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | `/api/news` | POST | 401 | 403 | 201 | INT-CONTENT, RBAC-41/44/45, E2E-ADMIN | |
 
 \* Valid amount + Stripe key.  
-† Signature verification.  
+† Invalid signatures return 400; persistence failures return 500; successful processing and duplicates of the same payment return 200.
 ‡ Desired after protect/isAdmin is added (not yet implemented).
 
 ## UI flows
@@ -45,7 +45,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 |------|------|-----|
 | Register → login → logout | E2E-AUTH `ui/specs/auth.spec.ts`, INT-AUTH (production cookie headers) | BUG-04 (API URL) |
 | Anon protected redirect | E2E-PROTECTED | BUG-09 (refresh race) |
-| Donate → history | E2E-DONATION | BUG-07 (webhook persistence) |
+| Donate → history | E2E-DONATION | |
 | Admin sees all donations | E2E-ADMIN | |
 | AddEvent creates event | E2E-ADMIN | |
 | Admin reload stays on dashboard | E2E-SESSION `test.fail` | BUG-09 |
