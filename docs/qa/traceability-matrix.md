@@ -11,7 +11,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | Route | Method | Anon | User | Admin | Tests | Bug |
 |-------|--------|------|------|-------|-------|-----|
 | `/register` | POST | 201/400 | — | — | UNIT-AUTH-CTRL, INT-AUTH, API-AUTH | BUG-01 (role) |
-| `/login` | POST | 200/401 | — | — | UNIT-AUTH-CTRL, INT-AUTH, API-AUTH, E2E-AUTH | BUG-10 (rate limit / errors) |
+| `/login` | POST | 200/401/429 | — | — | UNIT-AUTH-CTRL, INT-AUTH, INT-LOGIN-LIMIT, API-AUTH, E2E-AUTH, E2E-LOGIN-ERRORS | |
 | `/logout` | POST | 200 | 200 | 200 | UNIT-AUTH-CTRL, INT-AUTH, API-AUTH, E2E-AUTH | |
 | `/profile` | GET | 401 | 200 | 200 | UNIT-AUTH-CTRL, UNIT-AUTH-MW, API-AUTH | |
 | `/api/users/donations` | GET | 401 | 200/500 | 200/500 | INT-RBAC, RBAC-10/11, UNIT-USER, INT-USER | |
@@ -49,7 +49,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | Admin sees all donations | E2E-ADMIN | |
 | AddEvent creates event | E2E-ADMIN | |
 | Admin and user reload preserve authorized routes after session loading | E2E-SESSION | |
-| Login 500 messaging | E2E-LOGIN-ERRORS `test.fail` | BUG-10 |
+| Login credential, rate limit, server, and network error messages | E2E-LOGIN-ERRORS | |
 
 ## Cookie / frontend config defects
 
@@ -57,4 +57,4 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 |---------|----------|-----|
 | Hardcoded `http://localhost:3000` in Login, Register, Logout, AddEvent, AddNews, AdminDashboard, Home | `front/src/pages/*`, `FirstHeader.jsx` | BUG-04 |
 | Production auth cookies use `SameSite=None; Secure`; local cookies use `SameSite=Strict` | UNIT-AUTH-CTRL, INT-AUTH; separate HTTPS-site browser check pending | BUG-05 (implemented) |
-| `donation.save()` not awaited | `donationRoute.ts` / `contactRoute.ts` | BUG-10 |
+| Donation/contact creation awaits persistence; validation returns 400 and save failures return 500 | INT-CMS-SAVE | |

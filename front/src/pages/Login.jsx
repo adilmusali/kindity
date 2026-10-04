@@ -32,8 +32,18 @@ export const Login = () => {
         navigate("/"); 
       }
     } catch (error) {
-      toast.error("Invalid credentials. Please try again.");
-      console.error(error);
+      const status = error.response?.status;
+      if (status === 401) {
+        toast.error("Invalid credentials. Please try again.");
+      } else if (status === 429) {
+        toast.error("Too many login attempts. Please try again later.");
+      } else if (!error.response) {
+        toast.error("Unable to reach the server. Please check your connection.");
+      } else if (status >= 500) {
+        toast.error("Server error. Please try again later.");
+      } else {
+        toast.error("Unable to log in. Please try again.");
+      }
     }
   };
 

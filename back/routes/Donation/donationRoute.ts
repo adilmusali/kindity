@@ -10,10 +10,17 @@ const get = async (_req: Request, res: Response) => {
 }
 
 const post = async (req: Request, res: Response) => {
-    const uploadData = req.body;
-    const donation = new Donation(uploadData);
-    donation.save();
-    res.send(donation);
+    try {
+        const donation = new Donation({ header: req.body?.header, desc: req.body?.desc });
+        await donation.save();
+        res.send(donation);
+    } catch (error) {
+        if (error instanceof Error && error.name === 'ValidationError') {
+            res.status(400).json({ error: 'Invalid donation content.' });
+            return;
+        }
+        res.status(500).json({ error: 'Unable to save donation content.' });
+    }
 }
 
 const del = async (req: Request, res: Response) => {
