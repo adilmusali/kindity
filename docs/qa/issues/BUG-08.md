@@ -13,16 +13,21 @@
 
 ## Expected
 
-400/409 with a JSON error about duplicate email.
+409 with a JSON error about duplicate email; other database failures return controlled 500 responses.
 
-## Actual
+## Original behavior
 
 Mongo duplicate-key error is uncaught (no try/catch); request can hang or yield a raw 500 without a controlled body. Same missing try/catch on `getDonationHistory`.
 
-## Evidence
+## Regression coverage
 
-- UNIT-USER `it.failing` BUG-08
+- UNIT-USER: duplicate email returns 409 and leaves the stored email unchanged; lookup and history query failures return controlled 500 responses.
+- INT-USER: duplicate email preserves both stored profiles; invalid data returns 400; valid updates still succeed without exposing passwords; save/history failures return 500 and later requests can succeed.
 
-## Suggested fix
+Validation on 2026-10-04: five targeted payment/user suites passed (66 tests), and backend `tsc --noEmit` passed. HTTP tests use in-process Express and temporary MongoDB databases.
 
-Wrap handlers in try/catch; map Mongo `11000` to 409.
+## Resolution
+
+Both handlers catch query and save failures. Profile updates map Mongo duplicate-key errors (`11000`) to 409, model validation errors to 400, and unexpected failures to a generic JSON 500 response. Donation history failures return a generic JSON 500 response. Database details are logged server-side rather than sent to the client.
+
+Successful responses, donation filtering/sorting, and the existing missing-user 400 response are preserved. No schema migration, API route change, or infrastructure change is required.
