@@ -44,11 +44,11 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | Flow | Spec | Bug |
 |------|------|-----|
 | Register → login → logout | E2E-AUTH `ui/specs/auth.spec.ts`, INT-AUTH (production cookie headers) | BUG-04 (API URL) |
-| Anon protected redirect | E2E-PROTECTED | BUG-09 (refresh race) |
+| Anon protected redirect | E2E-PROTECTED, E2E-SESSION | |
 | Donate → history | E2E-DONATION | |
 | Admin sees all donations | E2E-ADMIN | |
 | AddEvent creates event | E2E-ADMIN | |
-| Admin reload stays on dashboard | E2E-SESSION `test.fail` | BUG-09 |
+| Admin and user reload preserve authorized routes after session loading | E2E-SESSION | |
 | Login 500 messaging | E2E-LOGIN-ERRORS `test.fail` | BUG-10 |
 
 ## Cookie / frontend config defects

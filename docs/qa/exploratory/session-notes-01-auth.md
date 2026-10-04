@@ -17,7 +17,7 @@
 |----|----------|------|
 | BUG-01 | Critical | Confirmed in code: `role: role \|\| 'user'` |
 | BUG-05 | High | Implemented: shared production cookie settings use `SameSite=None; Secure`; hosted browser verification pending |
-| BUG-09 | Medium | `ProtectedRoute`/`AdminRoute` gate on `user` without loading flag |
+| BUG-09 | Medium | Resolved: guards wait for session loading; E2E-SESSION covers slow reloads and denied access |
 | BUG-04 | High | Login/Register/Logout hardcode `localhost:3000` while profile uses `VITE_API_URL` |
 | NEW | Low | `userContext` swallows `/profile` errors with empty `.catch` — hard to diagnose session loss |
 
