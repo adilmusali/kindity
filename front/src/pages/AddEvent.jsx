@@ -3,24 +3,35 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../schema/schema";
 import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 const AddEvent = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const postData = async () => {
-    const values = getValues();
-    axios.post(`${import.meta.env.VITE_API_URL}/kindity/home/events`, {
-      img: values.img,
-      header: values.header,
-      desc: values.desc,
-    });
+  const [saveError, setSaveError] = useState("");
+
+  const postData = async (values) => {
+    setSaveError("");
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/events`, {
+        img: values.img,
+        header: values.header,
+        desc: values.desc,
+      });
+      toast.success("Event created successfully.");
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Could not create event. Please try again.";
+      setSaveError(message);
+      toast.error(message);
+    }
   };
 
   return (
@@ -70,12 +81,18 @@ const AddEvent = () => {
                 <p className="text-red-500">{errors.desc?.message}</p>
               )}
             </div>
+            {saveError && (
+              <p role="alert" className="text-red-500">
+                {saveError}
+              </p>
+            )}
             <button
               type="submit"
+              disabled={isSubmitting}
               className="px-5 py-2 text-white bg-[#ea2c58] 
             hover:bg-white hover:text-slate-500 border border-[#ea2c58] transition duration-500 mt-[20px]"
             >
-              Add
+              {isSubmitting ? "Saving..." : "Add"}
             </button>
           </form>
         </div>

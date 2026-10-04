@@ -1,7 +1,7 @@
-# BUG-03: AddEvent / AddNews post to commented-out routes (404)
+# BUG-03: AddEvent / AddNews post to unavailable routes
 
 **Severity:** High  
-**Component:** `front/src/pages/AddEvent.jsx`, `AddNews.jsx`; `back/server.ts`  
+**Component:** `front/src/pages/AddEvent.jsx`, `AddNews.jsx`; `back/routes/eventsRoutes.ts`, `newsRoutes.ts`
 **Environment:** All  
 **Labels:** `bug`, `severity:high`, `area:admin`
 
@@ -9,8 +9,8 @@
 
 1. Log in as admin.
 2. Open `/addEvent`, submit a valid form.
-3. Observe network call to `POST /kindity/home/events`.
-4. Repeat with `/addNews` → `/kindity/blog/news`.
+3. Submit a valid event and observe the request.
+4. Repeat on `/addNews` with valid story details.
 
 ## Expected
 
@@ -18,14 +18,14 @@
 
 ## Actual
 
-Routes are commented out / removed in `server.ts`; API returns 404. Admin forms silently fail.
+The admin forms posted to API routes that were not mounted, returning 404 without useful feedback.
 
 ## Evidence
 
-- INT-CONTENT `it.failing` BUG-03
-- RBAC-40/41 `test.fail`
-- E2E-ADMIN `test.fail` BUG-03
+- INT-CONTENT authorization, validation, and persistence coverage
+- RBAC-40…45 API authorization coverage
+- E2E-ADMIN event and news creation flows
 
-## Suggested fix
+## Resolution
 
-Restore admin-protected POST routes (or point UI at current `/api/events` / blog write APIs) and use `VITE_API_URL`.
+Add admin-protected creation handlers to `/api/events` and `/api/news`, connect both forms using `VITE_API_URL`, and show save success or failure.

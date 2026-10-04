@@ -32,8 +32,8 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | `/kindity/contact` | GET | 200 | 200 | 200 | RBAC-07 | |
 | `/kindity/contact` | POST | **401** | 401‡ | 201‡ | RBAC-31 | BUG-02 |
 | `/kindity/contact/:id` | PUT/DELETE | **401** | 401‡ | 200‡ | INT-RBAC | BUG-02 |
-| `/kindity/home/events` | POST | 401 | 401 | **2xx** | INT-CONTENT, RBAC-40, E2E-ADMIN | BUG-03 |
-| `/kindity/blog/news` | POST | 401 | 401 | **2xx** | INT-CONTENT, RBAC-41 | BUG-03 |
+| `/api/events` | POST | 401 | 403 | 201 | INT-CONTENT, RBAC-40/42/43, E2E-ADMIN | |
+| `/api/news` | POST | 401 | 403 | 201 | INT-CONTENT, RBAC-41/44/45, E2E-ADMIN | |
 
 \* Valid amount + Stripe key.  
 † Signature verification.  
@@ -47,7 +47,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | Anon protected redirect | E2E-PROTECTED | BUG-09 (refresh race) |
 | Donate → history | E2E-DONATION | BUG-06/07 (payment) |
 | Admin sees all donations | E2E-ADMIN | |
-| AddEvent creates event | E2E-ADMIN `test.fail` | BUG-03 |
+| AddEvent creates event | E2E-ADMIN | |
 | Admin reload stays on dashboard | E2E-SESSION `test.fail` | BUG-09 |
 | Login 500 messaging | E2E-LOGIN-ERRORS `test.fail` | BUG-10 |
 
