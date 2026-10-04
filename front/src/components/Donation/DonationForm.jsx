@@ -71,6 +71,9 @@ const DonationForm = () => {
               <input
                 className="border text-[13px] px-[20px] py-[10px] focus:outline-none focus:ring transition duration-100"
                 type="number"
+                min="0.01"
+                max="10000"
+                step="0.01"
                 placeholder="Donation amount (USD)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}

@@ -80,8 +80,8 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     expect(res.send).toHaveBeenCalledWith({ clientSecret: 'pi_test_secret_abc' });
   });
 
-  // BUG-06: amount validation gaps
-  it.failing(
+  // BUG-06: invalid amounts must be rejected before contacting Stripe.
+  it(
     'BUG-06: rejects non-numeric amount string (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -97,7 +97,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     }
   );
 
-  it.failing(
+  it(
     'BUG-06: rejects 0.001 (sub-cent) (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -113,7 +113,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     }
   );
 
-  it.failing(
+  it(
     'BUG-06: rejects 10.555 (non-integer cents) (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -129,7 +129,7 @@ describe('UNIT-PAY: createPaymentIntent', () => {
     }
   );
 
-  it.failing(
+  it(
     'BUG-06: rejects absurdly large amount 1e10 (https://github.com/adilmusali/kindity/issues/6)',
     async () => {
       const user = await UserModel.create({
@@ -142,6 +142,38 @@ describe('UNIT-PAY: createPaymentIntent', () => {
       await createPaymentIntent(req, res, jest.fn());
       expect(res.status).toHaveBeenCalledWith(400);
       expect(mockCreate).not.toHaveBeenCalled();
+    }
+  );
+});
+
+describe('UNIT-PAY: amount boundaries (BUG-06)', () => {
+  beforeEach(() => mockCreate.mockReset());
+
+  it.each(
+    [undefined, null, true, false, [], {}, { toString: null }, '25', NaN, Infinity, -Infinity, 10000.01, 1.0001]
+      .map((amount): [unknown] => [amount])
+  )(
+    'rejects invalid amount %p without calling Stripe', async (amount) => {
+      const req = { body: { amount }, user: { email: 'donor@example.com' } } as unknown as Request;
+      const res = mockRes();
+      await createPaymentIntent(req, res, jest.fn());
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: expect.any(String) });
+      expect(mockCreate).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each([[0.01, 1], [0.29, 29], [1.1, 110], [10.55, 1055], [9999.99, 999999], [10000, 1000000]])(
+    'sends amount %p to Stripe as exactly %p cents', async (amount, cents) => {
+      mockCreate.mockResolvedValue({ client_secret: 'pi_test_secret_boundary' });
+      const req = {
+        body: { amount }, user: { _id: '507f1f77bcf86cd799439011', email: 'donor@example.com' },
+      } as unknown as Request;
+      const res = mockRes();
+      await createPaymentIntent(req, res, jest.fn());
+      expect(mockCreate).toHaveBeenCalledTimes(1);
+      expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({ amount: cents, currency: 'usd' }));
+      expect(res.send).toHaveBeenCalledWith({ clientSecret: 'pi_test_secret_boundary' });
     }
   );
 });

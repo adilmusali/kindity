@@ -26,8 +26,8 @@ test.describe('API-PAY', () => {
     expect(neg.status()).toBe(400);
   });
 
-  for (const amount of ['abc', 0.001, 10.555, 1e10] as const) {
-    test.fail(
+  for (const amount of ['abc', '25', null, true, 0.001, 10.555, 10000.01, 1e10] as const) {
+    test(
       `BUG-06 #6: amount ${amount} should be rejected with 400`,
       async ({ freshUser }) => {
         const res = await freshUser.context.post('/api/payment/create-payment-intent', {

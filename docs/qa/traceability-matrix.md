@@ -16,7 +16,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 | `/profile` | GET | 401 | 200 | 200 | UNIT-AUTH-CTRL, UNIT-AUTH-MW, API-AUTH | |
 | `/api/users/donations` | GET | 401 | 200 | 200 | INT-RBAC, RBAC-10/11, UNIT-USER | |
 | `/api/users/profile` | PUT | 401 | 200 | 200 | INT-RBAC, RBAC-12/13, UNIT-USER | BUG-08 |
-| `/api/payment/create-payment-intent` | POST | 401 | 200* | 200* | INT-RBAC, RBAC-14, UNIT-PAY, API-PAY | BUG-06 |
+| `/api/payment/create-payment-intent` | POST | 401 | 200*/400 | 200*/400 | INT-RBAC, RBAC-14, UNIT-PAY, INT-PAY, API-PAY | |
 | `/api/payment/webhook` | POST | 200/400† | — | — | INT-PAY, API-PAY, UNIT-PAY | BUG-07 |
 | `/api/admin/donations` | GET | 401 | 403 | 200 | INT-RBAC, RBAC-20/21/22, E2E-ADMIN | |
 | `/api/events` | GET | 200 | 200 | 200 | INT-CONTENT, CON, RBAC-01 | |
@@ -45,7 +45,7 @@ Expected status is the **secure/correct** behavior. Rows marked with BUG-xx curr
 |------|------|-----|
 | Register → login → logout | E2E-AUTH `ui/specs/auth.spec.ts`, INT-AUTH (production cookie headers) | BUG-04 (API URL) |
 | Anon protected redirect | E2E-PROTECTED | BUG-09 (refresh race) |
-| Donate → history | E2E-DONATION | BUG-06/07 (payment) |
+| Donate → history | E2E-DONATION | BUG-07 (webhook persistence) |
 | Admin sees all donations | E2E-ADMIN | |
 | AddEvent creates event | E2E-ADMIN | |
 | Admin reload stays on dashboard | E2E-SESSION `test.fail` | BUG-09 |
